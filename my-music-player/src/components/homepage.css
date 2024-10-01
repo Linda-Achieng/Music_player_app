@@ -1,0 +1,183 @@
+/* src/components/homepage.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #121212; /* Dark background color */
+  color: white; /* White text color */
+}
+
+.homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full height of the viewport */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #1db954; /* Green bottom border for header */
+}
+
+.welcome-message {
+  font-size: 24px; /* Adjust the font size */
+  color: #1DB954; /* Spotify green */
+  font-weight: bold; /* Bold text */
+}
+
+.icons {
+  display: flex;
+  gap: 20px; /* Space between icons */
+}
+
+.icon {
+  color: white; /* Icon color */
+  font-size: 24px; /* Icon size */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.icon:hover {
+  color: #1DB954; /* Change color on hover */
+}
+
+.playlists {
+  padding: 20px;
+}
+
+.playlist-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns for playlists */
+  gap: 20px; /* Space between playlists */
+}
+
+.playlist {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  background-color: #282828; /* Dark background for playlist cards */
+  border-radius: 10px; /* Rounded corners */
+  padding: 10px;
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transform and shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.playlist:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.playlist img {
+  width: 120px; /* Decreased width for images */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Rounded corners for images */
+  margin-right: 15px; /* Increased space between image and text */
+}
+
+.playlist-details {
+  display: flex;
+  flex-direction: column; /* Stack title and description */
+}
+
+.playlist-description {
+  font-size: 14px; /* Increase font size */
+  color: #b3b3b3; /* A lighter gray for the description */
+  margin-top: 5px; /* Space between title and description */
+  max-width: 200px; /* Limit width for better readability */
+  word-wrap: break-word; /* Ensure long text wraps properly */
+}
+
+.shows {
+  padding: 20px;
+}
+
+.show-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns for shows */
+  gap: 20px; /* Space between shows */
+}
+
+.show {
+  background-color: #282828; /* Dark background for show cards */
+  border-radius: 10px; /* Rounded corners */
+  padding: 10px;
+  text-align: center; /* Center text */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transform and shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.show:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.show img {
+  width: 100px; /* Adjusted width for show images */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Rounded corners for images */
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around; /* Space evenly between footer items */
+  padding: 10px;
+  background-color: #181818; /* Dark footer background */
+  color: white; /* White text color in footer */
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column; /* Stack icon and text */
+  align-items: center; /* Center items */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.footer-icon {
+  font-size: 24px; /* Icon size */
+}
+
+.footer-item:hover {
+  color: #1DB954; /* Change color on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Stack header items */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .welcome-message {
+    font-size: 20px; /* Smaller font size for welcome message */
+  }
+
+  .icon {
+    font-size: 20px; /* Smaller icon size */
+  }
+
+  .playlist-container,
+  .show-container {
+    grid-template-columns: repeat(2, 1fr); /* Keep two columns for smaller screens */
+  }
+
+  .playlist img,
+  .show img {
+    width: 100%; /* Full width on smaller screens */
+  }
+
+  .playlist-description {
+    font-size: 12px; /* Smaller description font */
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    flex-direction: column; /* Stack footer items */
+  }
+
+  .footer-icon {
+    font-size: 20px; /* Smaller icon size in footer */
+  }
+}
