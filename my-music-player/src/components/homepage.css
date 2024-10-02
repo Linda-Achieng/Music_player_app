@@ -1,17 +1,15 @@
-/* src/components/homepage.css */
-
 body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #121212; /* Dark background color */
-  color: white; /* White text color */
+  background-color: #190d0d;
+  color: white; 
 }
 
 .homepage {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Full height of the viewport */
+  min-height: 100vh;
 }
 
 .header {
@@ -19,88 +17,88 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #1db954; /* Green bottom border for header */
 }
 
 .welcome-message {
-  font-size: 24px; /* Adjust the font size */
-  color: #1DB954; /* Spotify green */
-  font-weight: bold; /* Bold text */
+  font-size: 29px; 
+  color: #4f16ba;
+  font-weight: bold;
+  margin-top: 30px; 
 }
 
 .icons {
   display: flex;
-  gap: 20px; /* Space between icons */
+  gap: 20px;
 }
 
 .icon {
-  color: white; /* Icon color */
-  font-size: 24px; /* Icon size */
-  transition: color 0.3s; /* Smooth color transition */
+  color: rgb(94, 48, 210); 
+  font-size: 29px; 
+  transition: color 0.3s; 
 }
 
 .icon:hover {
-  color: #1DB954; /* Change color on hover */
+  color: #b95e1d; 
 }
 
 .playlists {
   padding: 20px;
+ margin-top:0px ;
 }
 
 .playlist-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns for playlists */
-  gap: 20px; /* Space between playlists */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px;
 }
 
 .playlist {
   display: flex;
-  align-items: center; /* Align items vertically */
-  background-color: #282828; /* Dark background for playlist cards */
-  border-radius: 10px; /* Rounded corners */
+  align-items: center; 
+  background-color: #2b3149; 
+  border-radius: 20px; 
   padding: 10px;
-  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transform and shadow on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  transition: transform 0.3s, box-shadow 0.3s; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .playlist:hover {
-  transform: translateY(-5px); /* Slight lift effect on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+  transform: translateY(-5px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
 .playlist img {
-  width: 120px; /* Decreased width for images */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 8px; /* Rounded corners for images */
-  margin-right: 15px; /* Increased space between image and text */
+  width: 150px;
+  height: auto; 
+  border-radius: 8px; 
+  margin-right: 15px; 
 }
 
 .playlist-details {
   display: flex;
-  flex-direction: column; /* Stack title and description */
+  flex-direction: column;
 }
 
 .playlist-description {
-  font-size: 14px; /* Increase font size */
-  color: #b3b3b3; /* A lighter gray for the description */
+  font-size: 14px; 
+  color: #b3b3b3; 
   margin-top: 5px; /* Space between title and description */
   max-width: 200px; /* Limit width for better readability */
   word-wrap: break-word; /* Ensure long text wraps properly */
 }
 
-/* Recently Played Styles */
 .recently-played {
   padding: 20px;
 }
 
-.recently-played-container {
+.show-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns for recently played tracks */
-  gap: 20px; /* Space between tracks */
+  grid-template-columns: repeat(2, 1fr); /* Two columns for shows */
+  gap: 20px; /* Space between shows */
 }
 
-.recently-played-track {
-  background-color: #282828; /* Dark background for recently played cards */
+.show {
+  background-color: #282828; /* Dark background for show cards */
   border-radius: 10px; /* Rounded corners */
   padding: 10px;
   text-align: center; /* Center text */
@@ -108,22 +106,21 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
 }
 
-.recently-played-track:hover {
+.show:hover {
   transform: translateY(-5px); /* Slight lift effect on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
 }
 
-.recently-played-track img {
-  width: 100px; /* Adjusted width for track images */
+.show img {
+  width: 100px; /* Adjusted width for show images */
   height: auto; /* Maintain aspect ratio */
   border-radius: 8px; /* Rounded corners for images */
 }
 
-.track-details {
-  padding: 10px 0; /* Padding for track details */
+.your-shows, .recommended-for-you {
+  padding: 20px;
 }
 
-/* Footer Styles */
 .footer {
   display: flex;
   justify-content: space-around; /* Space evenly between footer items */
@@ -164,19 +161,16 @@ body {
   }
 
   .playlist-container,
-  .show-container,
-  .recently-played-container {
-    grid-template-columns: repeat(2, 1fr); /* Keep two columns for smaller screens */
+  .show-container {
+    grid-template-columns: repeat(1, 1fr); /* Single column for smaller screens */
   }
 
   .playlist img,
-  .show img,
-  .recently-played-track img {
+  .show img {
     width: 100%; /* Full width on smaller screens */
   }
 
-  .playlist-description,
-  .track-details {
+  .playlist-description {
     font-size: 12px; /* Smaller description font */
   }
 }

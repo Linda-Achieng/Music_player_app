@@ -10,16 +10,16 @@ const HomePage = () => {
     const fetchPlaylists = async () => {
       try {
         const response = await fetch(
-          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/13134819883'
+          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/13134819883' // Using your actual playlist ID
         );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setPlaylists(data.tracks.data); // Set playlist tracks
+        setPlaylists(data.tracks.data); // Assuming you're fetching track data
 
-        // Select the last 4 tracks for recently played from the fetched playlist
-        const recentTracks = data.tracks.data.slice(-4); // Get the last 4 tracks
+        // Set recently played tracks from playlists (first 4 for example)
+        const recentTracks = data.tracks.data.slice(0, 4);
         setRecentlyPlayed(recentTracks);
       } catch (error) {
         console.error('Error fetching playlist:', error);
@@ -27,6 +27,26 @@ const HomePage = () => {
     };
 
     fetchPlaylists();
+  }, []);
+
+  // New useEffect to fetch recommended tracks
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const response = await fetch(
+          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/3155776842' // An example popular playlist ID
+        );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPlaylists((prevPlaylists) => [...prevPlaylists, ...data.tracks.data.slice(0, 4)]); // Fetching 4 recommended tracks
+      } catch (error) {
+        console.error('Error fetching recommended content:', error);
+      }
+    };
+
+    fetchRecommended();
   }, []);
 
   return (
@@ -49,6 +69,7 @@ const HomePage = () => {
                 <div className="playlist-details">
                   <h3>{playlist.title}</h3>
                   <p className="playlist-description">{playlist.artist.name}</p>
+                  {/* Add a button to play music */}
                   <button onClick={() => window.open(playlist.link, '_blank')}>
                     Play
                   </button>
@@ -63,14 +84,14 @@ const HomePage = () => {
 
       <section className="recently-played">
         <h2>Recently Played</h2>
-        <div className="recently-played-container">
+        <div className="show-container">
           {recentlyPlayed.length ? (
             recentlyPlayed.map((track) => (
-              <div className="recently-played-track" key={track.id}>
+              <div className="show" key={track.id}>
                 <img src={track.album.cover} alt={track.title} />
-                <div className="track-details">
+                <div className="show-details">
                   <h3>{track.title}</h3>
-                  <p className="track-description">{track.artist.name}</p>
+                  <p className="show-description">{track.artist.name}</p>
                   <button onClick={() => window.open(track.link, '_blank')}>
                     Play
                   </button>
@@ -78,7 +99,29 @@ const HomePage = () => {
               </div>
             ))
           ) : (
-            <p>No recently played tracks found</p>
+            <p>No recently played tracks found.</p>
+          )}
+        </div>
+      </section>
+
+      <section className="recommended">
+        <h2>Recommended for You</h2>
+        <div className="show-container">
+          {playlists.length ? (
+            playlists.slice(-4).map((track) => ( // Show only the last 4 tracks as recommended
+              <div className="show" key={track.id}>
+                <img src={track.album.cover} alt={track.title} />
+                <div className="show-details">
+                  <h3>{track.title}</h3>
+                  <p className="show-description">{track.artist.name}</p>
+                  <button onClick={() => window.open(track.link, '_blank')}>
+                    Play
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Loading recommended tracks...</p>
           )}
         </div>
       </section>
