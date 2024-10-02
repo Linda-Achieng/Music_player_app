@@ -88,18 +88,19 @@ body {
   word-wrap: break-word; /* Ensure long text wraps properly */
 }
 
-.shows {
+/* Recently Played Styles */
+.recently-played {
   padding: 20px;
 }
 
-.show-container {
+.recently-played-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns for shows */
-  gap: 20px; /* Space between shows */
+  grid-template-columns: repeat(2, 1fr); /* Two columns for recently played tracks */
+  gap: 20px; /* Space between tracks */
 }
 
-.show {
-  background-color: #282828; /* Dark background for show cards */
+.recently-played-track {
+  background-color: #282828; /* Dark background for recently played cards */
   border-radius: 10px; /* Rounded corners */
   padding: 10px;
   text-align: center; /* Center text */
@@ -107,17 +108,22 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
 }
 
-.show:hover {
+.recently-played-track:hover {
   transform: translateY(-5px); /* Slight lift effect on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
 }
 
-.show img {
-  width: 100px; /* Adjusted width for show images */
+.recently-played-track img {
+  width: 100px; /* Adjusted width for track images */
   height: auto; /* Maintain aspect ratio */
   border-radius: 8px; /* Rounded corners for images */
 }
 
+.track-details {
+  padding: 10px 0; /* Padding for track details */
+}
+
+/* Footer Styles */
 .footer {
   display: flex;
   justify-content: space-around; /* Space evenly between footer items */
@@ -158,16 +164,19 @@ body {
   }
 
   .playlist-container,
-  .show-container {
+  .show-container,
+  .recently-played-container {
     grid-template-columns: repeat(2, 1fr); /* Keep two columns for smaller screens */
   }
 
   .playlist img,
-  .show img {
+  .show img,
+  .recently-played-track img {
     width: 100%; /* Full width on smaller screens */
   }
 
-  .playlist-description {
+  .playlist-description,
+  .track-details {
     font-size: 12px; /* Smaller description font */
   }
 }

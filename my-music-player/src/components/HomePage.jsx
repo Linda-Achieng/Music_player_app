@@ -16,29 +16,17 @@ const HomePage = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setPlaylists(data.tracks.data);
+        setPlaylists(data.tracks.data); // Set playlist tracks
+
+        // Select the last 4 tracks for recently played from the fetched playlist
+        const recentTracks = data.tracks.data.slice(-4); // Get the last 4 tracks
+        setRecentlyPlayed(recentTracks);
       } catch (error) {
         console.error('Error fetching playlist:', error);
       }
     };
 
-    const fetchRecentlyPlayed = async () => {
-      try {
-        const response = await fetch(
-          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/user/me/history'
-        );
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setRecentlyPlayed(data.data.slice(0, 4)); // Limit to 4 recently played tracks
-      } catch (error) {
-        console.error('Error fetching recently played:', error);
-      }
-    };
-
     fetchPlaylists();
-    fetchRecentlyPlayed();
   }, []);
 
   return (
@@ -73,7 +61,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Recently Played Section */}
       <section className="recently-played">
         <h2>Recently Played</h2>
         <div className="recently-played-container">
@@ -91,7 +78,7 @@ const HomePage = () => {
               </div>
             ))
           ) : (
-            <p>Loading recently played tracks...</p>
+            <p>No recently played tracks found</p>
           )}
         </div>
       </section>
