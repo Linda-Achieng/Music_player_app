@@ -1,13 +1,48 @@
-// src/components/HomePage.jsx
-
-import React from 'react';
-import './homepage.css'; // Import your CSS file
+import React, { useEffect, useState } from 'react';
+import './homepage.css';
 import { FaRegClock, FaCog, FaHome, FaSearch, FaMusic } from 'react-icons/fa';
 
 const HomePage = () => {
+  const [playlists, setPlaylists] = useState([]);
+  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      try {
+        const response = await fetch(
+          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/13134819883'
+        );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPlaylists(data.tracks.data);
+      } catch (error) {
+        console.error('Error fetching playlist:', error);
+      }
+    };
+
+    const fetchRecentlyPlayed = async () => {
+      try {
+        const response = await fetch(
+          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/user/me/history'
+        );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setRecentlyPlayed(data.data.slice(0, 4)); // Limit to 4 recently played tracks
+      } catch (error) {
+        console.error('Error fetching recently played:', error);
+      }
+    };
+
+    fetchPlaylists();
+    fetchRecentlyPlayed();
+  }, []);
+
   return (
     <div className="homepage">
-      {/* Header Section */}
       <header className="header">
         <h1 className="welcome-message">Let the music heal your soul</h1>
         <div className="icons">
@@ -16,96 +51,51 @@ const HomePage = () => {
         </div>
       </header>
 
-      {/* Playlists Section */}
       <section className="playlists">
         <h2>Playlists</h2>
         <div className="playlist-container">
-          <div className="playlist">
-            <img src="https://via.placeholder.com/150" alt="Playlist 1" />
-            <div className="playlist-details">
-              <h3>Playlist Title 1</h3>
-              <p className="playlist-description">Song 1 - Artist 1</p>
-            </div>
-          </div>
-          <div className="playlist">
-            <img src="https://via.placeholder.com/150" alt="Playlist 2" />
-            <div className="playlist-details">
-              <h3>Playlist Title 2</h3>
-              <p className="playlist-description">Song 2 - Artist 2</p>
-            </div>
-          </div>
-          <div className="playlist">
-            <img src="https://via.placeholder.com/150" alt="Playlist 3" />
-            <div className="playlist-details">
-              <h3>Playlist Title 3</h3>
-              <p className="playlist-description">Song 3 - Artist 3</p>
-            </div>
-          </div>
-          <div className="playlist">
-            <img src="https://via.placeholder.com/150" alt="Playlist 4" />
-            <div className="playlist-details">
-              <h3>Playlist Title 4</h3>
-              <p className="playlist-description">Song 4 - Artist 4</p>
-            </div>
-          </div>
+          {playlists.length ? (
+            playlists.map((playlist) => (
+              <div className="playlist" key={playlist.id}>
+                <img src={playlist.album.cover} alt={playlist.title} />
+                <div className="playlist-details">
+                  <h3>{playlist.title}</h3>
+                  <p className="playlist-description">{playlist.artist.name}</p>
+                  <button onClick={() => window.open(playlist.link, '_blank')}>
+                    Play
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Loading playlists...</p>
+          )}
         </div>
       </section>
 
       {/* Recently Played Section */}
-      <section className="shows">
+      <section className="recently-played">
         <h2>Recently Played</h2>
-        <div className="show-container">
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Recently Played 1" />
-            <h3>Recently Played Title 1</h3>
-            <p className="playlist-description">Song A - Artist A</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Recently Played 2" />
-            <h3>Recently Played Title 2</h3>
-            <p className="playlist-description">Song B - Artist B</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Recently Played 3" />
-            <h3>Recently Played Title 3</h3>
-            <p className="playlist-description">Song C - Artist C</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Recently Played 4" />
-            <h3>Recently Played Title 4</h3>
-            <p className="playlist-description">Song D - Artist D</p>
-          </div>
+        <div className="recently-played-container">
+          {recentlyPlayed.length ? (
+            recentlyPlayed.map((track) => (
+              <div className="recently-played-track" key={track.id}>
+                <img src={track.album.cover} alt={track.title} />
+                <div className="track-details">
+                  <h3>{track.title}</h3>
+                  <p className="track-description">{track.artist.name}</p>
+                  <button onClick={() => window.open(track.link, '_blank')}>
+                    Play
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Loading recently played tracks...</p>
+          )}
         </div>
       </section>
 
-      {/* Your Shows Section */}
-      <section className="shows">
-        <h2>Your Shows</h2>
-        <div className="show-container">
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Show 1" />
-            <h3>Your Show Title 1</h3>
-            <p className="playlist-description">Show Details 1</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Show 2" />
-            <h3>Your Show Title 2</h3>
-            <p className="playlist-description">Show Details 2</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Show 3" />
-            <h3>Your Show Title 3</h3>
-            <p className="playlist-description">Show Details 3</p>
-          </div>
-          <div className="show">
-            <img src="https://via.placeholder.com/150" alt="Show 4" />
-            <h3>Your Show Title 4</h3>
-            <p className="playlist-description">Show Details 4</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer Section */}
       <footer className="footer">
         <div className="footer-item">
           <FaHome className="footer-icon" />
