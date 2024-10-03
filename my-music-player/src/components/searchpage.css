@@ -1,95 +1,116 @@
-/* General Styles */
+
 .search-page {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background-color: #f0f4f8;
+  background-color: #1b2025; /* Light blue background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* Header Styles */
+/* Header and Search Input */
 .search-header {
+  padding: 20px;
+  background-color: #1b2025; /* Blue header */
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  
 }
 
 .search-input-container {
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 600px;
 }
 
 .search-input {
-  padding: 10px;
-  border: 1px solid #007bff;
-  border-radius: 5px;
   flex-grow: 1;
-  transition: border-color 0.3s;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
 
 .search-input:focus {
-  border-color: #0056b3;
   outline: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
+
 .cancel-btn {
-  margin-left: 10px;
-  background-color: #dc3545;
-  color: white;
+  background-color: #1e90ff; 
   border: none;
+  padding: 8px 15px;
+  margin-left: 10px;
   border-radius: 5px;
-  padding: 10px 15px;
+  color: white;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cancel-btn:hover {
-  background-color: #c82333;
+  background-color: #005bb5;
+  transform: scale(1.05); /* Small hover animation */
 }
 
-/* Filter Button Styles */
+/* Filter Buttons */
 .filter-btns {
-  display: flex;
+  margin-top: 10px;
 }
 
 .filter-btns button {
-  padding: 10px 15px;
-  margin-left: 10px;
-  border: 1px solid #007bff;
-  border-radius: 5px;
-  background-color: #007bff;
+  background-color: #87cefa; 
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
   color: white;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.filter-btns button:hover {
-  background-color: #0056b3;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .filter-btns button.active {
-  background-color: #0056b3;
+  background-color: #1e90ff; 
 }
 
-/* Search Results Styles */
+.filter-btns button:hover {
+  background-color: #00bfff; 
+  transform: scale(1.1); /* Slight hover grow animation */
+}
+
+/* Search Results */
 .search-results {
-  margin-bottom: 20px;
+  padding: 20px;
+  flex-grow: 1;
 }
 
 .result-item {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
-  background-color: white;
   padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #2b3149; 
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.result-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px); /* Slight lift on hover */
 }
 
 .result-cover {
-  width: 60px; /* Adjusted size */
-  height: 60px; /* Adjusted size */
+  width: 50px;
+  height: 50px;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 15px;
+  object-fit: cover;
 }
 
 .result-details {
@@ -97,97 +118,94 @@
 }
 
 .result-title {
-  margin: 0;
-  font-size: 1.1em;
+  font-size: 24px;
+  color: whitesmoke
 }
 
 .result-artist {
-  margin: 0;
-  color: #666;
+  font-size: 18px;
+  color: #777;
 }
 
 .result-play-btn {
-  background-color: #28a745;
-  color: white;
+  background-color: #1e90ff; /* Blue button */
   border: none;
+  padding: 8px 15px;
   border-radius: 5px;
-  padding: 5px 10px;
+  color: white;
+  font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .result-play-btn:hover {
-  background-color: #218838;
+  background-color: #005bb5;
+  transform: scale(1.05);
 }
 
-/* Suggested Songs Styles */
-.suggested-songs {
-  margin-top: 20px;
-}
-
-.suggested-songs h2 {
-  margin-bottom: 10px;
-}
-
-.suggested-songs ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.suggested-songs li {
-  cursor: pointer;
-  margin-bottom: 5px;
-  transition: text-decoration 0.3s;
-}
-
-.suggested-songs li:hover {
-  text-decoration: underline;
-}
-
-/* Footer Styles */
+/* Footer */
 .footer {
+  background-color: #090909;
   display: flex;
   justify-content: space-around;
-  padding: 10px 0;
+  padding: 15px 0;
+  color: white;
 }
 
 .footer-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  color: #666;
+  font-size: 14px;
+  margin-top: 20px;
 }
 
 .footer-icon {
-  margin-right: 5px;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
-/* Mini Player Styles */
+.footer-item.active {
+  color: #00bfff; /* Active footer item color */
+}
+
+/* Mini Music Player */
 .mini-player {
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  background-color: #f2aeae; /* White background */
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  color: #1b2025;
 }
 
 .mini-player-cover {
-  width: 50px; /* Adjusted size */
-  height: 50px; /* Adjusted size */
+  width: 50px;
+  height: 50px;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.mini-player-details {
+  flex-grow: 1;
 }
 
 .mini-player-play-btn {
-  background-color: #007bff;
-  color: white;
+  background-color: #1e90ff;
   border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
+  padding: 10px;
+  border-radius: 50%;
+  color: rgb(25, 24, 24);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .mini-player-play-btn:hover {
-  background-color: #0056b3;
+  background-color: #005bb5;
+  transform: scale(1.1); /* Grow button on hover */
 }
