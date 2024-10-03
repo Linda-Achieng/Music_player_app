@@ -12,29 +12,90 @@ const SearchPage = () => {
     {
       id: 1,
       type: 'song',
-      title: 'Candle in the dark',
+      title: 'Candle in the Dark',
       artist: 'Quadrant, Iris, Dummy',
-      cover: 'song-cover-url',
+      cover: 'https://example.com/song1-cover.jpg',
+      audio: 'https://example.com/song1.mp3',
     },
     {
       id: 2,
       type: 'song',
       title: 'Can We Go Back',
       artist: 'Scientist',
-      cover: 'song-cover-url',
+      cover: 'https://example.com/song2-cover.jpg',
+      audio: 'https://example.com/song2.mp3',
     },
     {
       id: 3,
-      type: 'album',
+      type: 'song',
       title: 'Dark Memories',
       artist: 'Black Barrel',
-      cover: 'album-cover-url',
+      cover: 'https://example.com/song3-cover.jpg',
+      audio: 'https://example.com/song3.mp3',
     },
     {
       id: 4,
-      type: 'artist',
-      name: 'Alan Thompson',
-      cover: 'artist-cover-url',
+      type: 'song',
+      title: 'Song of the Sea',
+      artist: 'Ewan Dobson',
+      cover: 'https://example.com/song4-cover.jpg',
+      audio: 'https://example.com/song4.mp3',
+    },
+    {
+      id: 5,
+      type: 'song',
+      title: 'Lost in the Echo',
+      artist: 'Linkin Park',
+      cover: 'https://example.com/song5-cover.jpg',
+      audio: 'https://example.com/song5.mp3',
+    },
+    {
+      id: 6,
+      type: 'song',
+      title: 'Shallow',
+      artist: 'Lady Gaga, Bradley Cooper',
+      cover: 'https://example.com/song6-cover.jpg',
+      audio: 'https://example.com/song6.mp3',
+    },
+    {
+      id: 7,
+      type: 'song',
+      title: 'Shape of You',
+      artist: 'Ed Sheeran',
+      cover: 'https://example.com/song7-cover.jpg',
+      audio: 'https://example.com/song7.mp3',
+    },
+    {
+      id: 8,
+      type: 'song',
+      title: 'Believer',
+      artist: 'Imagine Dragons',
+      cover: 'https://example.com/song8-cover.jpg',
+      audio: 'https://example.com/song8.mp3',
+    },
+  ];
+
+  // Suggested songs (you can modify this)
+  const suggestedSongs = [
+    {
+      id: 9,
+      title: 'Thunder',
+      artist: 'Imagine Dragons',
+    },
+    {
+      id: 10,
+      title: 'Someone You Loved',
+      artist: 'Lewis Capaldi',
+    },
+    {
+      id: 11,
+      title: 'Perfect',
+      artist: 'Ed Sheeran',
+    },
+    {
+      id: 12,
+      title: 'Blinding Lights',
+      artist: 'The Weeknd',
     },
   ];
 
@@ -130,6 +191,18 @@ const SearchPage = () => {
         ) : (
           <p>No results found.</p>
         )}
+
+        {/* Suggested Songs Section */}
+        <div className="suggested-songs">
+          <h2>Suggested Songs</h2>
+          <ul>
+            {suggestedSongs.map((song) => (
+              <li key={song.id} onClick={() => playTrack(song)}>
+                {song.title} by {song.artist}
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <footer className="footer">
@@ -162,6 +235,10 @@ const SearchPage = () => {
           <button className="mini-player-play-btn" onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
+          {/* Audio element to play music */}
+          {isPlaying && (
+            <audio src={playingTrack.audio} autoPlay onEnded={() => setIsPlaying(false)} />
+          )}
         </div>
       )}
     </div>

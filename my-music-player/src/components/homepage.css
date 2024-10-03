@@ -160,7 +160,7 @@ body {
   justify-content: space-around;
   padding: 10px;
   background-color: var(--footer-bg-color);
-  color: var(--text-color);
+  color: white;
 }
 
 .footer-item {

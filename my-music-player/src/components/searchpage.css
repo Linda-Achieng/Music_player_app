@@ -1,116 +1,95 @@
-/* Main Search Page Container */
+/* General Styles */
 .search-page {
-  background-color: #1b2025; /* Light blue background */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f0f4f8;
 }
 
-/* Header and Search Input */
+/* Header Styles */
 .search-header {
-  padding: 20px;
-  background-color: #1e90ff; /* Blue header */
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  border-bottom: 3px solid #005bb5;
+  margin-bottom: 20px;
 }
 
 .search-input-container {
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 600px;
 }
 
 .search-input {
-  flex-grow: 1;
   padding: 10px;
-  border: none;
+  border: 1px solid #007bff;
   border-radius: 5px;
-  font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  flex-grow: 1;
+  transition: border-color 0.3s;
 }
 
 .search-input:focus {
+  border-color: #0056b3;
   outline: none;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Cancel Button */
 .cancel-btn {
-  background-color: #1e90ff; /* Blue */
-  border: none;
-  padding: 8px 15px;
   margin-left: 10px;
-  border-radius: 5px;
+  background-color: #dc3545;
   color: white;
-  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s;
 }
 
 .cancel-btn:hover {
-  background-color: #005bb5; /* Darker blue on hover */
-  transform: scale(1.05); /* Small hover animation */
+  background-color: #c82333;
 }
 
-/* Filter Buttons */
+/* Filter Button Styles */
 .filter-btns {
-  margin-top: 10px;
+  display: flex;
 }
 
 .filter-btns button {
-  background-color: #87cefa; /* Lighter blue */
-  border: none;
-  padding: 10px 20px;
-  margin: 0 5px;
-  border-radius: 20px;
+  padding: 10px 15px;
+  margin-left: 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  background-color: #007bff;
   color: white;
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.filter-btns button.active {
-  background-color: #1e90ff; /* Highlight active button */
+  transition: background-color 0.3s;
 }
 
 .filter-btns button:hover {
-  background-color: #00bfff; /* Slightly darker blue on hover */
-  transform: scale(1.1); /* Slight hover grow animation */
+  background-color: #0056b3;
 }
 
-/* Search Results */
+.filter-btns button.active {
+  background-color: #0056b3;
+}
+
+/* Search Results Styles */
 .search-results {
-  padding: 20px;
-  flex-grow: 1;
+  margin-bottom: 20px;
 }
 
 .result-item {
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
+  background-color: white;
   padding: 10px;
-  background-color: #ffffff; /* White background for each result */
-  margin-bottom: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.result-item:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px); /* Slight lift on hover */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .result-cover {
-  width: 50px;
-  height: 50px;
+  width: 60px; /* Adjusted size */
+  height: 60px; /* Adjusted size */
   border-radius: 5px;
-  margin-right: 15px;
-  object-fit: cover;
+  margin-right: 10px;
 }
 
 .result-details {
@@ -118,92 +97,97 @@
 }
 
 .result-title {
-  font-size: 16px;
-  color: #333;
+  margin: 0;
+  font-size: 1.1em;
 }
 
 .result-artist {
-  font-size: 14px;
-  color: #777;
+  margin: 0;
+  color: #666;
 }
 
 .result-play-btn {
-  background-color: #1e90ff; /* Blue button */
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
+  background-color: #28a745;
   color: white;
-  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s;
 }
 
 .result-play-btn:hover {
-  background-color: #005bb5;
-  transform: scale(1.05);
+  background-color: #218838;
 }
 
-/* Footer */
+/* Suggested Songs Styles */
+.suggested-songs {
+  margin-top: 20px;
+}
+
+.suggested-songs h2 {
+  margin-bottom: 10px;
+}
+
+.suggested-songs ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.suggested-songs li {
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: text-decoration 0.3s;
+}
+
+.suggested-songs li:hover {
+  text-decoration: underline;
+}
+
+/* Footer Styles */
 .footer {
-  background-color: #1e90ff;
   display: flex;
   justify-content: space-around;
-  padding: 15px 0;
-  color: white;
+  padding: 10px 0;
 }
 
 .footer-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  font-size: 14px;
+  color: #666;
 }
 
 .footer-icon {
-  font-size: 20px;
-  margin-bottom: 5px;
+  margin-right: 5px;
 }
 
-.footer-item.active {
-  color: #00bfff; /* Active footer item color */
-}
-
-/* Mini Music Player */
+/* Mini Player Styles */
 .mini-player {
-  position: fixed;
-  bottom: 70px;
-  left: 0;
-  right: 0;
-  background-color: #ffffff; /* White background */
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px;
   display: flex;
   align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .mini-player-cover {
-  width: 50px;
-  height: 50px;
+  width: 50px; /* Adjusted size */
+  height: 50px; /* Adjusted size */
   border-radius: 5px;
-  margin-right: 15px;
-  object-fit: cover;
-}
-
-.mini-player-details {
-  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .mini-player-play-btn {
-  background-color: #1e90ff;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
+  background-color: #007bff;
   color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s;
 }
 
 .mini-player-play-btn:hover {
-  background-color: #005bb5;
-  transform: scale(1.1); /* Grow button on hover */
+  background-color: #0056b3;
 }
