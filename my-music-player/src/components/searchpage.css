@@ -1,0 +1,209 @@
+/* Main Search Page Container */
+.search-page {
+  background-color: #1b2025; /* Light blue background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header and Search Input */
+.search-header {
+  padding: 20px;
+  background-color: #1e90ff; /* Blue header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 3px solid #005bb5;
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background-color: #1e90ff; /* Blue */
+  border: none;
+  padding: 8px 15px;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #005bb5; /* Darker blue on hover */
+  transform: scale(1.05); /* Small hover animation */
+}
+
+/* Filter Buttons */
+.filter-btns {
+  margin-top: 10px;
+}
+
+.filter-btns button {
+  background-color: #87cefa; /* Lighter blue */
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-btns button.active {
+  background-color: #1e90ff; /* Highlight active button */
+}
+
+.filter-btns button:hover {
+  background-color: #00bfff; /* Slightly darker blue on hover */
+  transform: scale(1.1); /* Slight hover grow animation */
+}
+
+/* Search Results */
+.search-results {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff; /* White background for each result */
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.result-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.result-cover {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.result-details {
+  flex-grow: 1;
+}
+
+.result-title {
+  font-size: 16px;
+  color: #333;
+}
+
+.result-artist {
+  font-size: 14px;
+  color: #777;
+}
+
+.result-play-btn {
+  background-color: #1e90ff; /* Blue button */
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.result-play-btn:hover {
+  background-color: #005bb5;
+  transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+  background-color: #1e90ff;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0;
+  color: white;
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+}
+
+.footer-icon {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.footer-item.active {
+  color: #00bfff; /* Active footer item color */
+}
+
+/* Mini Music Player */
+.mini-player {
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.mini-player-cover {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.mini-player-details {
+  flex-grow: 1;
+}
+
+.mini-player-play-btn {
+  background-color: #1e90ff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.mini-player-play-btn:hover {
+  background-color: #005bb5;
+  transform: scale(1.1); /* Grow button on hover */
+}

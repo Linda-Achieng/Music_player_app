@@ -31,7 +31,7 @@ body.light-mode {
   --hover-shadow-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Global styles */
+
 body {
   margin: 0;
   padding: 0;
@@ -47,7 +47,7 @@ body {
   min-height: 100vh;
 }
 
-/* Header styles */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -77,7 +77,6 @@ body {
   color: var(--hover-color);
 }
 
-/* Playlists section */
 .playlists {
   padding: 20px;
   margin-top: 0px;
@@ -175,14 +174,13 @@ body {
 .footer-icon {
   font-size: 28px;
   color: var(--footer-icon-color);
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .footer-item:hover {
   color: var(--hover-color);
 }
 
-/* Button styling */
 button {
   background-color: var(--button-bg-color);
   color: var(--button-text-color);

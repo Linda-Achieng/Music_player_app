@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './homepage.css';
 import { FaRegClock, FaCog, FaHome, FaSearch, FaMusic } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
 
 const HomePage = () => {
   const [playlists, setPlaylists] = useState([]);
@@ -129,20 +131,17 @@ const HomePage = () => {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-item">
-          <FaHome className="footer-icon" />
-          Home
-        </div>
-        <div className="footer-item">
-          <FaSearch className="footer-icon" />
-          Search
-        </div>
-        <div className="footer-item">
-          <FaMusic className="footer-icon" />
-          My Library
-        </div>
-      </footer>
+     <footer className="footer">
+  <div className="footer-item">
+    <Link to="/"><FaHome className="footer-icon" />Home</Link>
+  </div>
+  <div className="footer-item">
+    <Link to="/search"><FaSearch className="footer-icon" />Search</Link>
+  </div>
+  <div className="footer-item">
+    <Link to="/"><FaMusic className="footer-icon" />My Library</Link>
+  </div>
+</footer>
     </div>
   );
 };
