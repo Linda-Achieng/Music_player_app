@@ -132,13 +132,19 @@ const HomePage = () => {
 
       <footer className="footer">
         <div className="footer-item">
-          <Link to="/"><FaHome className="footer-icon" />Home</Link>
+          <Link to="/">
+            <FaHome className="footer-icon" /> Home
+          </Link>
         </div>
         <div className="footer-item">
-          <Link to="/search"><FaSearch className="footer-icon" />Search</Link>
+          <Link to="/search">
+            <FaSearch className="footer-icon" /> Search
+          </Link>
         </div>
         <div className="footer-item">
-          <Link to="/"><FaMusic className="footer-icon" />My Library</Link>
+          <Link to="/library">
+            <FaMusic className="footer-icon" /> My Library
+          </Link>
         </div>
       </footer>
     </div>

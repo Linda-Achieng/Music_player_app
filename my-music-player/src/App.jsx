@@ -3,9 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
-import LibraryPage from './components/LibraryPage'; // Importing LibraryPage
+import LibraryPage from './components/LibraryPage';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
@@ -15,6 +15,6 @@ const App = () => {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;

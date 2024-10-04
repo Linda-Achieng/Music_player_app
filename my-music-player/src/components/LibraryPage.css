@@ -1,48 +1,56 @@
 .library-page {
-  background-color: #1b2025;
-  color: #fff;
-  min-height: 100vh;
-  padding: 20px;
+  background-color: #1b2025; /* Background color */
+  color: #fff; /* Text color */
+  min-height: 100vh; /* Full height */
+  padding: 20px; /* Padding */
 }
 
 .library-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; /* Flexbox for header */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+}
+
+.back-btn {
+  background: none; /* No background */
+  border: none; /* No border */
+  color: #00bfff; /* Arrow color */
+  cursor: pointer; /* Pointer cursor */
+  font-size: 16px; /* Font size */
 }
 
 .filter-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  display: flex; /* Flexbox for buttons */
+  gap: 10px; /* Gap between buttons */
+  margin-top: 20px; /* Margin on top */
 }
 
 .filter-buttons button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  border-radius: 20px;
-  cursor: pointer;
+  background-color: #333; /* Button color */
+  color: #fff; /* Button text color */
+  padding: 10px; /* Padding */
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
 }
 
 .library-content {
-  margin-top: 20px;
+  margin-top: 20px; /* Margin on top */
 }
 
 .library-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+  display: flex; /* Flexbox for item */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 15px; /* Space between items */
 }
 
 .library-item img {
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
-  margin-right: 10px;
+  width: 50px; /* Image width */
+  height: 50px; /* Image height */
+  border-radius: 5px; /* Rounded corners */
+  margin-right: 10px; /* Space on right */
 }
 
 .item-details {
-  display: flex;
-  flex-direction: column;
+  display: flex; /* Flexbox for details */
+  flex-direction: column; /* Stack items vertically */
 }

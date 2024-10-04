@@ -16,26 +16,10 @@ const SearchPage = () => {
 
   // Suggested songs (you can modify this)
   const suggestedSongs = [
-    {
-      id: 9,
-      title: 'Thunder',
-      artist: 'Imagine Dragons',
-    },
-    {
-      id: 10,
-      title: 'Someone You Loved',
-      artist: 'Lewis Capaldi',
-    },
-    {
-      id: 11,
-      title: 'Perfect',
-      artist: 'Ed Sheeran',
-    },
-    {
-      id: 12,
-      title: 'Blinding Lights',
-      artist: 'The Weeknd',
-    },
+    { id: 9, title: 'Thunder', artist: 'Imagine Dragons' },
+    { id: 10, title: 'Someone You Loved', artist: 'Lewis Capaldi' },
+    { id: 11, title: 'Perfect', artist: 'Ed Sheeran' },
+    { id: 12, title: 'Blinding Lights', artist: 'The Weeknd' },
   ];
 
   // Fetch data from Deezer API
@@ -150,25 +134,23 @@ const SearchPage = () => {
         </div>
       </section>
 
-     
-<footer className="footer">
-  <div className="footer-item">
-    <Link to="/">
-      <FaHome className="footer-icon" />
-      Home
-    </Link>
-  </div>
-  <div className="footer-item active">
-    <Link to="/search">
-      <FaSearch className="footer-icon" />
-      Search
-    </Link>
-  </div>
-  <div className="footer-item">
-    <FaMusic className="footer-icon" />
-    Your Library
-  </div>
-</footer>
+      <footer className="footer">
+        <div className="footer-item">
+          <Link to="/">
+            <FaHome className="footer-icon" /> Home
+          </Link>
+        </div>
+        <div className="footer-item active">
+          <Link to="/search">
+            <FaSearch className="footer-icon" /> Search
+          </Link>
+        </div>
+        <div className="footer-item">
+          <Link to="/library">
+            <FaMusic className="footer-icon" /> Your Library
+          </Link>
+        </div>
+      </footer>
 
       {/* Mini music player */}
       {playingTrack && (
