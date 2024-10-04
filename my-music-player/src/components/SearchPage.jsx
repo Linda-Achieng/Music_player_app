@@ -1,79 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaSearch, FaHome, FaMusic, FaPlay, FaPause } from 'react-icons/fa';
 import './SearchPage.css';
+import { Link } from 'react-router-dom';
+
+const DEEZER_API_URL = 'https://api.deezer.com/search';
+const DEEZER_TRACK_URL = 'https://www.deezer.com/track';
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('songs'); // Filter state (songs, albums, artists)
+  const [results, setResults] = useState([]); // Deezer API results
   const [playingTrack, setPlayingTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const results = [
-    {
-      id: 1,
-      type: 'song',
-      title: 'Candle in the Dark',
-      artist: 'Quadrant, Iris, Dummy',
-      cover: 'https://example.com/song1-cover.jpg',
-      audio: 'https://example.com/song1.mp3',
-    },
-    {
-      id: 2,
-      type: 'song',
-      title: 'Can We Go Back',
-      artist: 'Scientist',
-      cover: 'https://example.com/song2-cover.jpg',
-      audio: 'https://example.com/song2.mp3',
-    },
-    {
-      id: 3,
-      type: 'song',
-      title: 'Dark Memories',
-      artist: 'Black Barrel',
-      cover: 'https://example.com/song3-cover.jpg',
-      audio: 'https://example.com/song3.mp3',
-    },
-    {
-      id: 4,
-      type: 'song',
-      title: 'Song of the Sea',
-      artist: 'Ewan Dobson',
-      cover: 'https://example.com/song4-cover.jpg',
-      audio: 'https://example.com/song4.mp3',
-    },
-    {
-      id: 5,
-      type: 'song',
-      title: 'Lost in the Echo',
-      artist: 'Linkin Park',
-      cover: 'https://example.com/song5-cover.jpg',
-      audio: 'https://example.com/song5.mp3',
-    },
-    {
-      id: 6,
-      type: 'song',
-      title: 'Shallow',
-      artist: 'Lady Gaga, Bradley Cooper',
-      cover: 'https://example.com/song6-cover.jpg',
-      audio: 'https://example.com/song6.mp3',
-    },
-    {
-      id: 7,
-      type: 'song',
-      title: 'Shape of You',
-      artist: 'Ed Sheeran',
-      cover: 'https://example.com/song7-cover.jpg',
-      audio: 'https://example.com/song7.mp3',
-    },
-    {
-      id: 8,
-      type: 'song',
-      title: 'Believer',
-      artist: 'Imagine Dragons',
-      cover: 'https://example.com/song8-cover.jpg',
-      audio: 'https://example.com/song8.mp3',
-    },
-  ];
 
   // Suggested songs (you can modify this)
   const suggestedSongs = [
@@ -99,17 +38,24 @@ const SearchPage = () => {
     },
   ];
 
-  // Filter and search logic
-  const filteredResults = results.filter((item) => {
-    if (filter === 'songs') {
-      return item.type === 'song' && item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (filter === 'albums') {
-      return item.type === 'album' && item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    } else if (filter === 'artists') {
-      return item.type === 'artist' && item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  // Fetch data from Deezer API
+  const fetchDeezerData = async (query) => {
+    try {
+      const response = await axios.get(DEEZER_API_URL, {
+        params: { q: query },
+      });
+      setResults(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data from Deezer:', error);
     }
-    return false;
-  });
+  };
+
+  // Handle search input change
+  useEffect(() => {
+    if (searchTerm) {
+      fetchDeezerData(searchTerm);
+    }
+  }, [searchTerm]);
 
   // Handle song play/pause
   const playTrack = (track) => {
@@ -124,6 +70,7 @@ const SearchPage = () => {
   // Handle cancel button (clears the search)
   const handleCancel = () => {
     setSearchTerm('');
+    setResults([]);
   };
 
   return (
@@ -166,26 +113,24 @@ const SearchPage = () => {
       </header>
 
       <section className="search-results">
-        {filteredResults.length > 0 ? (
-          filteredResults.map((result) => (
+        {results.length > 0 ? (
+          results.map((result) => (
             <div className="result-item" key={result.id}>
               <img
-                src={result.cover}
+                src={result.album.cover_medium}
                 alt={result.title || result.name}
                 className="result-cover"
               />
               <div className="result-details">
                 <h3 className="result-title">{result.title || result.name}</h3>
-                <p className="result-artist">{result.artist}</p>
+                <p className="result-artist">{result.artist.name}</p>
               </div>
-              {result.type === 'song' && (
-                <button
-                  className="result-play-btn"
-                  onClick={() => playTrack(result)}
-                >
-                  Play
-                </button>
-              )}
+              <button
+                className="result-play-btn"
+                onClick={() => playTrack(result)}
+              >
+                Play
+              </button>
             </div>
           ))
         ) : (
@@ -205,39 +150,48 @@ const SearchPage = () => {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-item">
-          <FaHome className="footer-icon" />
-          Home
-        </div>
-        <div className="footer-item active">
-          <FaSearch className="footer-icon" />
-          Search
-        </div>
-        <div className="footer-item">
-          <FaMusic className="footer-icon" />
-          Your Library
-        </div>
-      </footer>
+     
+<footer className="footer">
+  <div className="footer-item">
+    <Link to="/">
+      <FaHome className="footer-icon" />
+      Home
+    </Link>
+  </div>
+  <div className="footer-item active">
+    <Link to="/search">
+      <FaSearch className="footer-icon" />
+      Search
+    </Link>
+  </div>
+  <div className="footer-item">
+    <FaMusic className="footer-icon" />
+    Your Library
+  </div>
+</footer>
 
       {/* Mini music player */}
       {playingTrack && (
         <div className="mini-player">
           <img
-            src={playingTrack.cover}
+            src={playingTrack.album.cover_medium}
             alt={playingTrack.title}
             className="mini-player-cover"
           />
           <div className="mini-player-details">
             <h3>{playingTrack.title}</h3>
-            <p>{playingTrack.artist}</p>
+            <p>{playingTrack.artist.name}</p>
           </div>
           <button className="mini-player-play-btn" onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
-          {/* Audio element to play music */}
+          {/* Deezer song link */}
           {isPlaying && (
-            <audio src={playingTrack.audio} autoPlay onEnded={() => setIsPlaying(false)} />
+            <audio
+              src={`${DEEZER_TRACK_URL}/${playingTrack.id}`}
+              autoPlay
+              onEnded={() => setIsPlaying(false)}
+            />
           )}
         </div>
       )}

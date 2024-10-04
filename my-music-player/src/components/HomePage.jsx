@@ -3,7 +3,6 @@ import './homepage.css';
 import { FaRegClock, FaCog, FaHome, FaSearch, FaMusic } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-
 const HomePage = () => {
   const [playlists, setPlaylists] = useState([]);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
@@ -67,7 +66,7 @@ const HomePage = () => {
           <FaCog className="icon" />
         </div>
         <button onClick={toggleTheme}>
-          {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          {isDarkMode ? '🌙' : '☀️'}
         </button>
       </header>
 
@@ -75,8 +74,8 @@ const HomePage = () => {
         <h2>Playlists</h2>
         <div className="playlist-container">
           {playlists.length ? (
-            playlists.map((playlist) => (
-              <div className="playlist" key={playlist.id}>
+            playlists.map((playlist, index) => (
+              <div className="playlist" key={`${playlist.id}-${index}`}>
                 <img src={playlist.album.cover} alt={playlist.title} />
                 <div className="playlist-details">
                   <h3>{playlist.title}</h3>
@@ -95,8 +94,8 @@ const HomePage = () => {
         <h2>Recently Played</h2>
         <div className="show-container">
           {recentlyPlayed.length ? (
-            recentlyPlayed.map((track) => (
-              <div className="show" key={track.id}>
+            recentlyPlayed.map((track, index) => (
+              <div className="show" key={`${track.id}-${index}`}>
                 <img src={track.album.cover} alt={track.title} />
                 <div className="show-details">
                   <h3>{track.title}</h3>
@@ -115,8 +114,8 @@ const HomePage = () => {
         <h2>Recommended for You</h2>
         <div className="show-container">
           {playlists.length ? (
-            playlists.slice(-4).map((track) => (
-              <div className="show" key={track.id}>
+            playlists.slice(-4).map((track, index) => (
+              <div className="show" key={`${track.id}-${index}`}>
                 <img src={track.album.cover} alt={track.title} />
                 <div className="show-details">
                   <h3>{track.title}</h3>
@@ -131,17 +130,17 @@ const HomePage = () => {
         </div>
       </section>
 
-     <footer className="footer">
-  <div className="footer-item">
-    <Link to="/"><FaHome className="footer-icon" />Home</Link>
-  </div>
-  <div className="footer-item">
-    <Link to="/search"><FaSearch className="footer-icon" />Search</Link>
-  </div>
-  <div className="footer-item">
-    <Link to="/"><FaMusic className="footer-icon" />My Library</Link>
-  </div>
-</footer>
+      <footer className="footer">
+        <div className="footer-item">
+          <Link to="/"><FaHome className="footer-icon" />Home</Link>
+        </div>
+        <div className="footer-item">
+          <Link to="/search"><FaSearch className="footer-icon" />Search</Link>
+        </div>
+        <div className="footer-item">
+          <Link to="/"><FaMusic className="footer-icon" />My Library</Link>
+        </div>
+      </footer>
     </div>
   );
 };

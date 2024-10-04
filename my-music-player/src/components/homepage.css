@@ -31,7 +31,6 @@ body.light-mode {
   --hover-shadow-color: rgba(0, 0, 0, 0.2);
 }
 
-
 body {
   margin: 0;
   padding: 0;
@@ -46,7 +45,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
-
 
 .header {
   display: flex;
