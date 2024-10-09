@@ -79,6 +79,21 @@ body {
   padding: 20px;
   margin-top: 0px;
 }
+.settings-modal, .schedule-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #77adea;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Make sure it appears above other content */
+}
+
+.settings-modal h2, .schedule-modal h2 {
+  margin-bottom: 10px;
+}
 
 .playlist-container {
   display: grid;

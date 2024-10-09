@@ -9,12 +9,14 @@ const DEEZER_TRACK_URL = 'https://www.deezer.com/track';
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('songs'); // Filter state (songs, albums, artists)
-  const [results, setResults] = useState([]); // Deezer API results
+  const [filter, setFilter] = useState('songs'); 
+  const [results, setResults] = useState([]); 
   const [playingTrack, setPlayingTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  // Suggested songs (you can modify this)
+  // Suggested songs
   const suggestedSongs = [
     { id: 9, title: 'Thunder', artist: 'Imagine Dragons' },
     { id: 10, title: 'Someone You Loved', artist: 'Lewis Capaldi' },
@@ -22,36 +24,49 @@ const SearchPage = () => {
     { id: 12, title: 'Blinding Lights', artist: 'The Weeknd' },
   ];
 
-  // Fetch data from Deezer API
+  // Fetch data from Deezer API with debouncing
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm) {
+        fetchDeezerData(searchTerm);
+      } else {
+        setResults([]);
+      }
+    }, 300); // Delay of 300ms
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
   const fetchDeezerData = async (query) => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error
     try {
       const response = await axios.get(DEEZER_API_URL, {
         params: { q: query },
       });
       setResults(response.data.data);
     } catch (error) {
+      setError('Error fetching data from Deezer. Please try again.');
       console.error('Error fetching data from Deezer:', error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
-  // Handle search input change
-  useEffect(() => {
-    if (searchTerm) {
-      fetchDeezerData(searchTerm);
-    }
-  }, [searchTerm]);
-
-  // Handle song play/pause
   const playTrack = (track) => {
-    setPlayingTrack(track);
-    setIsPlaying(true);
+    if (playingTrack && playingTrack.id === track.id && isPlaying) {
+      // If the same track is already playing, pause it
+      setIsPlaying(false);
+    } else {
+      setPlayingTrack(track);
+      setIsPlaying(true);
+    }
   };
 
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
 
-  // Handle cancel button (clears the search)
   const handleCancel = () => {
     setSearchTerm('');
     setResults([]);
@@ -97,6 +112,8 @@ const SearchPage = () => {
       </header>
 
       <section className="search-results">
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
         {results.length > 0 ? (
           results.map((result) => (
             <div className="result-item" key={result.id}>
@@ -113,7 +130,7 @@ const SearchPage = () => {
                 className="result-play-btn"
                 onClick={() => playTrack(result)}
               >
-                Play
+                {playingTrack && playingTrack.id === result.id && isPlaying ? 'Pause' : 'Play'}
               </button>
             </div>
           ))

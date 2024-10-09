@@ -1,57 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './LibraryPage.css'; // Ensure this file exists
+import { Link, useNavigate } from 'react-router-dom';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaPlus, FaRedoAlt, FaRandom } from 'react-icons/fa';
+import './LibraryPage.css';
+
+const DEEZER_PLAYLIST_ID = '13134819883'; // Your Deezer playlist ID
 
 const LibraryPage = () => {
-  const [contentType, setContentType] = useState('playlists');
   const [libraryData, setLibraryData] = useState([]);
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [contentType, setContentType] = useState('tracks'); // Default content type
   const navigate = useNavigate();
 
-  const fetchLibraryData = async (type) => {
-    try {
-      const response = await axios.get(`https://api.deezer.com/user/me/${type}`, {
-        params: { access_token: 'YOUR_DEEZER_ACCESS_TOKEN' }, // Replace with your actual token
-      });
-      setLibraryData(response.data.data);
-    } catch (error) {
-      console.error('Error fetching library data', error);
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const response = await fetch(`https://api.deezer.com/playlist/${DEEZER_PLAYLIST_ID}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch playlist');
+        }
+        const data = await response.json();
+        setLibraryData(data.tracks.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchPlaylist();
+  }, []);
+
+  const handlePlayPause = (track) => {
+    if (currentTrack && track.id === currentTrack.id) {
+      setIsPlaying(!isPlaying);
+    } else {
+      setCurrentTrack(track);
+      setIsPlaying(true);
     }
   };
 
-  useEffect(() => {
-    fetchLibraryData(contentType);
-  }, [contentType]);
+  const navigateBack = () => {
+    navigate(-1); // Navigate back to the previous page (either search or home)
+  };
 
   return (
     <div className="library-page">
       <header className="library-header">
-        <h1>Your Library</h1>
-        <button onClick={() => navigate('/search')} className="back-btn">← Back to Search</button>
+        <button className="back-btn" onClick={navigateBack}>{'<'} Back</button>
+        <h1>Your Playlist</h1>
       </header>
 
       <div className="filter-buttons">
-        <button onClick={() => setContentType('playlists')}>Playlists</button>
-        <button onClick={() => setContentType('podcasts')}>Podcasts</button>
-        <button onClick={() => setContentType('albums')}>Albums</button>
-        <button onClick={() => setContentType('artists')}>Artists</button>
+        <button onClick={() => setContentType('tracks')} className={contentType === 'tracks' ? 'active' : ''}>Tracks</button>
+        <button onClick={() => setContentType('albums')} className={contentType === 'albums' ? 'active' : ''}>Albums</button>
+        <button onClick={() => setContentType('artists')} className={contentType === 'artists' ? 'active' : ''}>Artists</button>
       </div>
 
       <div className="library-content">
-        {libraryData.length > 0 ? (
-          libraryData.map((item) => (
-            <div className="library-item" key={item.id}>
-              <img src={item.picture || item.cover} alt={item.title || item.name} />
+        {isLoading && <p>Loading your playlist...</p>}
+        {error && <p>Error: {error}</p>}
+        {!isLoading && !error && libraryData.length === 0 && <p>No tracks found in your playlist.</p>}
+        {!isLoading && !error && libraryData.length > 0 && (
+          libraryData.map((track) => (
+            <div className="library-item" key={track.id}>
+              <img
+                src={track.album.cover_medium}
+                alt={track.title}
+                className="library-item-img"
+              />
               <div className="item-details">
-                <h3>{item.title || item.name}</h3>
-                <p>{item.artist ? item.artist.name : ''}</p>
+                <h3>{track.title}</h3>
+                <p>{track.artist.name}</p>
+                <button onClick={() => handlePlayPause(track)}>
+                  {isPlaying && currentTrack && currentTrack.id === track.id ? <FaPause /> : <FaPlay />}
+                </button>
               </div>
             </div>
           ))
-        ) : (
-          <p>No data available</p>
         )}
       </div>
+
+      {currentTrack && (
+        <div className="music-player">
+          <div className="player-details">
+            <img src={currentTrack.album.cover_medium} alt={currentTrack.title} className="player-cover" />
+            <div className="track-info">
+              <h3>{currentTrack.title}</h3>
+              <p>{currentTrack.artist.name}</p>
+            </div>
+          </div>
+          <div className="player-controls">
+            <button><FaStepBackward /></button>
+            <button onClick={() => handlePlayPause(currentTrack)}>
+              {isPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <button><FaStepForward /></button>
+          </div>
+          <div className="player-actions">
+            <button><FaHeart /></button>
+            <button><FaPlus /> Add to playlist</button>
+            <button><FaRedoAlt /> Repeat</button>
+            <button><FaRandom /> Shuffle</button>
+          </div>
+        </div>
+      )}
+
+      <footer className="footer">
+        <div className="footer-item">
+          <Link to="/">Home</Link>
+        </div>
+        <div className="footer-item">
+          <Link to="/search">Search</Link>
+        </div>
+        <div className="footer-item active">
+          <Link to="/library">Library</Link>
+        </div>
+      </footer>
     </div>
   );
 };

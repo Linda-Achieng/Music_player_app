@@ -7,6 +7,8 @@ const HomePage = () => {
   const [playlists, setPlaylists] = useState([]);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
+  const [showSettings, setShowSettings] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
 
   useEffect(() => {
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
@@ -14,6 +16,14 @@ const HomePage = () => {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
+  };
+
+  const toggleSchedule = () => {
+    setShowSchedule(!showSchedule);
   };
 
   useEffect(() => {
@@ -62,13 +72,36 @@ const HomePage = () => {
       <header className="header">
         <h1 className="welcome-message">Let the music heal your soul</h1>
         <div className="icons">
-          <FaRegClock className="icon" />
-          <FaCog className="icon" />
+          <FaRegClock className="icon" onClick={toggleSchedule} />
+          <FaCog className="icon" onClick={toggleSettings} />
         </div>
         <button onClick={toggleTheme}>
           {isDarkMode ? '🌙' : '☀️'}
         </button>
       </header>
+
+      {showSettings && (
+        <div className="settings-modal">
+          <h2>Settings</h2>
+          <button onClick={toggleTheme}>
+            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          </button>
+          {/* Add more settings options here */}
+          <button onClick={toggleSettings}>Close</button>
+        </div>
+      )}
+
+      {showSchedule && (
+        <div className="schedule-modal">
+          <h2>Upcoming Releases</h2>
+          <ul>
+            <li>Artist 1 - Album (Release Date)</li>
+            <li>Artist 2 - Album (Release Date)</li>
+            {/* Add more upcoming releases */}
+          </ul>
+          <button onClick={toggleSchedule}>Close</button>
+        </div>
+      )}
 
       <section className="playlists">
         <h2>Playlists</h2>

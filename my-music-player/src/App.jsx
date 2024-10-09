@@ -1,18 +1,49 @@
-// src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import LibraryPage from './components/LibraryPage';
+import MusicPlayer from './components/MusicPlayer';
 
 function App() {
+  const [currentTrack, setCurrentTrack] = useState(null);
+
+  // Function to set the selected track
+  const handleTrackSelection = (track) => {
+    setCurrentTrack(track);
+  };
+
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/library" element={<LibraryPage />} /> {/* Route for LibraryPage */}
-      </Routes>
+      <div className="app-container">
+        <Routes>
+          {/* Home Route */}
+          <Route path="/" element={<HomePage />} />
+          
+          {/* Search Page */}
+          <Route path="/search" element={<SearchPage onTrackSelect={handleTrackSelection} />} />
+          
+          {/* Library Page */}
+          <Route path="/library" element={<LibraryPage onTrackSelect={handleTrackSelection} />} />
+          
+          {/* Music Player Route */}
+          <Route 
+            path="/player" 
+            element={
+              currentTrack ? (
+                <MusicPlayer
+                  track={currentTrack.name}
+                  artist={currentTrack.artist}
+                  albumArt={currentTrack.albumArt}
+                  onBack={() => window.history.back()} // Navigate back to library or search
+                />
+              ) : (
+                <div>No track selected</div>
+              )
+            }
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }

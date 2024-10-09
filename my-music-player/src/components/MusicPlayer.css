@@ -1,0 +1,101 @@
+/* MusicPlayer.css */
+
+/* Global dark mode styles */
+
+
+/* Music Player Container */
+.music-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+/* Top Bar with Back Button */
+.top-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.track-info {
+  font-size: 18px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+/* Album Art */
+.album-art {
+  margin-bottom: 20px;
+}
+
+.album-art img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Playback Controls */
+.playback-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.control-btn {
+  font-size: 24px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.3s ease;
+}
+
+.control-btn:hover {
+  color: #1db954; /* Green Spotify-like color for hover */
+}
+
+.play-pause {
+  font-size: 32px;
+}
+
+/* Additional Controls (Shuffle, Repeat, Like, Add to Playlist) */
+.additional-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.additional-controls .control-btn {
+  flex: 1;
+  text-align: center;
+}
+
+.additional-controls .control-btn.active {
+  color: #1db954; /* Green for active shuffle/repeat */
+}
+
+.additional-controls .control-btn.liked {
+  color: red; /* Red for liked songs */
+}
+
+.additional-controls .control-btn:hover {
+  color: #1db954;
+}
