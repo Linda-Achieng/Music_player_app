@@ -46,6 +46,14 @@ const LibraryPage = () => {
     navigate(-1); // Navigate back to the previous page (either search or home)
   };
 
+  // Filtering logic
+  const filteredLibraryData = libraryData.filter(track => {
+    if (contentType === 'tracks') return true;
+    if (contentType === 'albums') return track.album !== undefined; // Change as per your requirement
+    if (contentType === 'artists') return track.artist !== undefined; // Change as per your requirement
+    return true;
+  });
+
   return (
     <div className="library-page">
       <header className="library-header">
@@ -62,9 +70,9 @@ const LibraryPage = () => {
       <div className="library-content">
         {isLoading && <p>Loading your playlist...</p>}
         {error && <p>Error: {error}</p>}
-        {!isLoading && !error && libraryData.length === 0 && <p>No tracks found in your playlist.</p>}
-        {!isLoading && !error && libraryData.length > 0 && (
-          libraryData.map((track) => (
+        {!isLoading && !error && filteredLibraryData.length === 0 && <p>No tracks found in your playlist.</p>}
+        {!isLoading && !error && filteredLibraryData.length > 0 && (
+          filteredLibraryData.map((track) => (
             <div className="library-item" key={track.id}>
               <img
                 src={track.album.cover_medium}
@@ -93,7 +101,7 @@ const LibraryPage = () => {
             </div>
           </div>
           <div className="player-controls">
-            <button><FaStepBackward /></button>
+            <button onClick={() => handlePlayPause(currentTrack)}><FaStepBackward /></button>
             <button onClick={() => handlePlayPause(currentTrack)}>
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
