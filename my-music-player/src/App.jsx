@@ -3,12 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import LibraryPage from './components/LibraryPage';
-import MusicPlayer from './components/Musicplayer';
+import MusicPlayer from './components/MusicPlayer';
 
-function App() {s
+function App() {  
   const [currentTrack, setCurrentTrack] = useState(null);
 
-  
   const handleTrackSelection = (track) => {
     setCurrentTrack(track);
   };
@@ -35,7 +34,7 @@ function App() {s
                   track={currentTrack.name}
                   artist={currentTrack.artist}
                   albumArt={currentTrack.albumArt}
-                  onBack={() => window.history.back()} // Navigate back to library or search
+                  onBack={() => window.history.back()} 
                 />
               ) : (
                 <div>No track selected</div>
