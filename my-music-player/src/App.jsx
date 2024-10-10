@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import LibraryPage from './components/LibraryPage';
-import MusicPlayer from './components/musicplayer';
+import MusicPlayer from './components/Musicplayer';
 
-function App() {
+function App() {s
   const [currentTrack, setCurrentTrack] = useState(null);
 
   
