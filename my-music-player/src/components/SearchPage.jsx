@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaSearch, FaHome, FaMusic, FaPlay, FaPause } from 'react-icons/fa';
-import './SearchPage.css';
+import './searchPage.css';
 import { Link } from 'react-router-dom';
 
 const DEEZER_API_URL = 'https://api.deezer.com/search';
