@@ -86,7 +86,6 @@ const HomePage = () => {
           <button onClick={toggleTheme}>
             {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           </button>
-          {/* Add more settings options here */}
           <button onClick={toggleSettings}>Close</button>
         </div>
       )}
@@ -95,9 +94,9 @@ const HomePage = () => {
         <div className="schedule-modal">
           <h2>Upcoming Releases</h2>
           <ul>
-            <li>Artist 1 - Album (Release Date)</li>
-            <li>Artist 2 - Album (Release Date)</li>
-            {/* Add more upcoming releases */}
+            <li>sasha Alex Slogan- Older (Release Date)</li>
+            <li>KSHMR- Close your eyes (Release Date)</li>
+            <li>prince Inda - nyar jaduong</li>
           </ul>
           <button onClick={toggleSchedule}>Close</button>
         </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaPlus, FaRedoAlt, FaRandom } from 'react-icons/fa';
 import './LibraryPage.css';
 
-const DEEZER_PLAYLIST_ID = '13134819883'; // Your Deezer playlist ID
+const DEEZER_PLAYLIST_ID = '13134819883'; 
 
 const LibraryPage = () => {
   const [libraryData, setLibraryData] = useState([]);
@@ -11,7 +11,7 @@ const LibraryPage = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [contentType, setContentType] = useState('tracks'); // Default content type
+  const [contentType, setContentType] = useState('tracks'); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,10 +43,10 @@ const LibraryPage = () => {
   };
 
   const navigateBack = () => {
-    navigate(-1); // Navigate back to the previous page (either search or home)
+    navigate(-1); 
   };
 
-  // Filtering logic
+
   const filteredLibraryData = libraryData.filter(track => {
     if (contentType === 'tracks') return true;
     if (contentType === 'albums') return track.album !== undefined; // Change as per your requirement

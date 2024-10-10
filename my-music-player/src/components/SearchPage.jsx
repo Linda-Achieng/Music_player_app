@@ -13,10 +13,9 @@ const SearchPage = () => {
   const [results, setResults] = useState([]); 
   const [playingTrack, setPlayingTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Suggested songs
   const suggestedSongs = [
     { id: 9, title: 'Thunder', artist: 'Imagine Dragons' },
     { id: 10, title: 'Someone You Loved', artist: 'Lewis Capaldi' },
@@ -24,7 +23,6 @@ const SearchPage = () => {
     { id: 12, title: 'Blinding Lights', artist: 'The Weeknd' },
   ];
 
-  // Fetch data from Deezer API with debouncing
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm) {
@@ -32,39 +30,38 @@ const SearchPage = () => {
       } else {
         setResults([]);
       }
-    }, 300); // Delay of 300ms
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
   const fetchDeezerData = async (query) => {
-    setLoading(true); // Start loading
-    setError(null); // Reset error
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get(DEEZER_API_URL, {
         params: { q: query },
       });
       setResults(response.data.data);
     } catch (error) {
-      setError('Error fetching data from Deezer. Please try again.');
+      setError('Error fetching data from Deezer. Please try again later.');
       console.error('Error fetching data from Deezer:', error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
   const playTrack = (track) => {
     if (playingTrack && playingTrack.id === track.id && isPlaying) {
-      // If the same track is already playing, pause it
-      setIsPlaying(false);
+      setIsPlaying(false); // Pause if the same track is playing
     } else {
       setPlayingTrack(track);
-      setIsPlaying(true);
+      setIsPlaying(true); // Play the selected track
     }
   };
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    setIsPlaying((prev) => !prev); // Toggle play/pause
   };
 
   const handleCancel = () => {
@@ -90,30 +87,21 @@ const SearchPage = () => {
           )}
         </div>
         <div className="filter-btns">
-          <button
-            className={filter === 'songs' ? 'active' : ''}
-            onClick={() => setFilter('songs')}
-          >
-            Songs
-          </button>
-          <button
-            className={filter === 'albums' ? 'active' : ''}
-            onClick={() => setFilter('albums')}
-          >
-            Albums
-          </button>
-          <button
-            className={filter === 'artists' ? 'active' : ''}
-            onClick={() => setFilter('artists')}
-          >
-            Artists
-          </button>
+          {['songs', 'albums', 'artists'].map((option) => (
+            <button
+              key={option}
+              className={filter === option ? 'active' : ''}
+              onClick={() => setFilter(option)}
+            >
+              {option.charAt(0).toUpperCase() + option.slice(1)}
+            </button>
+          ))}
         </div>
       </header>
 
       <section className="search-results">
         {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
         {results.length > 0 ? (
           results.map((result) => (
             <div className="result-item" key={result.id}>
@@ -135,10 +123,9 @@ const SearchPage = () => {
             </div>
           ))
         ) : (
-          <p>No results found.</p>
+          <p>No results found. Please try a different search.</p>
         )}
 
-        {/* Suggested Songs Section */}
         <div className="suggested-songs">
           <h2>Suggested Songs</h2>
           <ul>
@@ -169,7 +156,6 @@ const SearchPage = () => {
         </div>
       </footer>
 
-      {/* Mini music player */}
       {playingTrack && (
         <div className="mini-player">
           <img
@@ -184,7 +170,6 @@ const SearchPage = () => {
           <button className="mini-player-play-btn" onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
-          {/* Deezer song link */}
           {isPlaying && (
             <audio
               src={`${DEEZER_TRACK_URL}/${playingTrack.id}`}

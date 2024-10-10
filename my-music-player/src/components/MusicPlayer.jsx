@@ -9,11 +9,11 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
   const [isShuffling, setIsShuffling] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [volume, setVolume] = useState(1); // Volume state
+  const [volume, setVolume] = useState(1); 
   const audioRef = useRef(new Audio(audioSrc)); // Ref for audio element
 
   const handleBackClick = () => {
-    navigate(-1); // Go back to the previous page (search or library)
+    navigate(-1); 
   };
 
   const togglePlayPause = () => {
@@ -28,12 +28,10 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
   };
 
   const handleSkipBackward = () => {
-    // Logic to skip to the previous track
-    console.log('Skipping to the previous track');
+     console.log('Skipping to the previous track');
   };
 
   const handleSkipForward = () => {
-    // Logic to skip to the next track
     console.log('Skipping to the next track');
   };
 
@@ -57,20 +55,19 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
 
   return (
     <div className="music-player">
-      {/* Top Bar with Back Button */}
-      <div className="top-bar">
+    <div className="top-bar">
         <button onClick={handleBackClick} className="back-btn" aria-label="Back">
           {"<"}
         </button>
         <h3 className="track-info">{artist} - {track}</h3>
       </div>
 
-      {/* Album Artwork */}
+    
       <div className="album-art">
         <img src={albumArt} alt={`${track} album cover`} />
       </div>
 
-      {/* Playback Controls */}
+    
       <div className="playback-controls">
         <button onClick={handleSkipBackward} className="control-btn" aria-label="Previous track">
           <FaBackward />
@@ -83,7 +80,7 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
         </button>
       </div>
 
-      {/* Additional Controls */}
+      
       <div className="additional-controls">
         <button onClick={toggleShuffle} className={`control-btn ${isShuffling ? 'active' : ''}`} aria-label="Shuffle">
           <FaRandom />
@@ -102,7 +99,7 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
         </button>
       </div>
 
-      {/* Volume Control */}
+      
       <div className="volume-control">
         <label htmlFor="volume" className="volume-label">Volume:</label>
         <input

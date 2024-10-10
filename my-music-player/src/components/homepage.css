@@ -1,6 +1,5 @@
-/* Root variables for dark and light mode */
 :root {
-  /* Dark mode colors (default) */
+  /* Dark mode  (default) */
   --background-color: #190d0d;
   --text-color: white;
   --primary-color: #4f16ba;
@@ -88,7 +87,7 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000; /* Make sure it appears above other content */
+  z-index: 1000;
 }
 
 .settings-modal h2, .schedule-modal h2 {
@@ -136,7 +135,7 @@ body {
   word-wrap: break-word;
 }
 
-/* Recently played section */
+
 .recently-played {
   padding: 20px;
 }
@@ -167,7 +166,7 @@ body {
   border-radius: 8px;
 }
 
-/* Footer */
+
 .footer {
   display: flex;
   justify-content: space-around;

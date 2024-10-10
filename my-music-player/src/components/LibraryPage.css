@@ -3,12 +3,12 @@
   color: #fff;
   min-height: 100vh;
   padding: 20px;
-  box-sizing: border-box; /* Include padding in the total height */
+  box-sizing: border-box;
 }
 
 .library-header {
   display: flex;
-  margin-bottom: 20px; /* Add space below the header */
+  margin-bottom: 20px;
   
 }
 .library-header h1{
@@ -29,12 +29,12 @@ margin-right: 50px;
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
 .header-actions button:hover {
-  background-color: #4a90e2; /* Change background on hover */
-  transform: scale(1.1); /* Slightly increase size */
+  background-color: #4a90e2; 
+  transform: scale(1.1); 
 }
 
 .filter-buttons {
@@ -49,15 +49,15 @@ margin-right: 50px;
   padding: 10px;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease; 
 }
 
 .filter-buttons .active {
-  background-color: #4a90e2; /* Highlight active filter button */
+  background-color: #4a90e2; 
 }
 
 .filter-buttons button:hover {
-  background-color: #4a90e2; /* Change background on hover */
+  background-color: #4a90e2; 
 }
 
 .library-content {
@@ -73,11 +73,11 @@ margin-right: 50px;
   padding: 10px;
   width: 150px;
   text-align: center;
-  transition: transform 0.2s ease; /* Smooth scaling effect */
+  transition: transform 0.2s ease; 
 }
 
 .library-item:hover {
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  transform: scale(1.05); 
 }
 
 .library-item-img {
@@ -125,6 +125,6 @@ margin-right: 50px;
 /* Responsive Design */
 @media (max-width: 600px) {
   .library-item {
-    width: 100px; /* Adjust size for smaller screens */
+    width: 100px; 
   }
 }
