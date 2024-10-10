@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import LibraryPage from './components/LibraryPage';
-import MusicPlayer from './components/MusicPlayer';
+import MusicPlayer from './components/musicplayer';
 
 function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
 
-  // Function to set the selected track
+  
   const handleTrackSelection = (track) => {
     setCurrentTrack(track);
   };
