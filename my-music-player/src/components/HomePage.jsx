@@ -3,13 +3,22 @@ import './homepage.css';
 import { FaRegClock, FaCog, FaHome, FaSearch, FaMusic } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
+const CLIENT_ID = '57319966653740b2bf9478612ae7831e'; // Your Spotify Client ID
+const REDIRECT_URI = 'http://localhost:5173/callback'; // Replace with your redirect URI
+const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
+const RESPONSE_TYPE = 'token';
+const SCOPE = 'user-library-read user-read-playback-state'; // Scopes you need for user playback info
+
 const HomePage = () => {
   const [playlists, setPlaylists] = useState([]);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
+  const [recommended, setRecommended] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
+  const [token, setToken] = useState('');
 
+  // Handle theme toggle
   useEffect(() => {
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
   }, [isDarkMode]);
@@ -26,46 +35,93 @@ const HomePage = () => {
     setShowSchedule(!showSchedule);
   };
 
+  // Spotify Authentication - Extract token from URL after login
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const response = await fetch(
-          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/13134819883'
-        );
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPlaylists(data.tracks.data);
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem('token');
 
-        const recentTracks = data.tracks.data.slice(0, 4);
-        setRecentlyPlayed(recentTracks);
-      } catch (error) {
-        console.error('Error fetching playlist:', error);
-      }
-    };
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split('&')
+        .find(elem => elem.startsWith('access_token'))
+        .split('=')[1];
 
-    fetchPlaylists();
+      window.location.hash = '';
+      window.localStorage.setItem('token', token);
+    }
+
+    setToken(token);
   }, []);
 
-  useEffect(() => {
-    const fetchRecommended = async () => {
-      try {
-        const response = await fetch(
-          'https://cors-anywhere.herokuapp.com/https://api.deezer.com/playlist/3155776842'
-        );
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPlaylists((prevPlaylists) => [...prevPlaylists, ...data.tracks.data.slice(0, 4)]);
-      } catch (error) {
-        console.error('Error fetching recommended content:', error);
-      }
-    };
+  // Fetch user's playlists from Spotify API
+  const fetchUserPlaylists = async () => {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me/playlists', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    fetchRecommended();
-  }, []);
+      if (!response.ok) {
+        throw new Error('Failed to fetch playlists');
+      }
+
+      const data = await response.json();
+      setPlaylists(data.items);
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
+    }
+  };
+
+  // Fetch recently played tracks from Spotify API
+  const fetchRecentlyPlayed = async () => {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me/player/recently-played', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch recently played tracks');
+      }
+
+      const data = await response.json();
+      setRecentlyPlayed(data.items.slice(0, 4)); // Store only the first 4 tracks
+    } catch (error) {
+      console.error('Error fetching recently played tracks:', error);
+    }
+  };
+
+  // Fetch recommended tracks for the user
+  const fetchRecommendedTracks = async () => {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/recommendations?limit=4', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch recommended tracks');
+      }
+
+      const data = await response.json();
+      setRecommended(data.tracks);
+    } catch (error) {
+      console.error('Error fetching recommended tracks:', error);
+    }
+  };
+
+  // Fetch playlists, recently played, and recommendations once token is available
+  useEffect(() => {
+    if (token) {
+      fetchUserPlaylists();
+      fetchRecentlyPlayed();
+      fetchRecommendedTracks();
+    }
+  }, [token]);
 
   return (
     <div className="homepage">
@@ -94,9 +150,9 @@ const HomePage = () => {
         <div className="schedule-modal">
           <h2>Upcoming Releases</h2>
           <ul>
-            <li>sasha Alex Slogan- Older (Release Date)</li>
-            <li>KSHMR- Close your eyes (Release Date)</li>
-            <li>prince Inda - nyar jaduong</li>
+            <li>Sasha Alex Slogan - Older (Release Date)</li>
+            <li>KSHMR - Close Your Eyes (Release Date)</li>
+            <li>Prince Inda - Nyar Jaduong</li>
           </ul>
           <button onClick={toggleSchedule}>Close</button>
         </div>
@@ -106,13 +162,13 @@ const HomePage = () => {
         <h2>Playlists</h2>
         <div className="playlist-container">
           {playlists.length ? (
-            playlists.map((playlist, index) => (
-              <div className="playlist" key={`${playlist.id}-${index}`}>
-                <img src={playlist.album.cover} alt={playlist.title} />
+            playlists.map((playlist) => (
+              <div className="playlist" key={playlist.id}>
+                <img src={playlist.images[0]?.url} alt={playlist.name} />
                 <div className="playlist-details">
-                  <h3>{playlist.title}</h3>
-                  <p className="playlist-description">{playlist.artist.name}</p>
-                  <button onClick={() => window.open(playlist.link, '_blank')}>Play</button>
+                  <h3>{playlist.name}</h3>
+                  <p className="playlist-description">By {playlist.owner.display_name}</p>
+                  <button onClick={() => window.open(playlist.external_urls.spotify, '_blank')}>Play</button>
                 </div>
               </div>
             ))
@@ -126,13 +182,13 @@ const HomePage = () => {
         <h2>Recently Played</h2>
         <div className="show-container">
           {recentlyPlayed.length ? (
-            recentlyPlayed.map((track, index) => (
-              <div className="show" key={`${track.id}-${index}`}>
-                <img src={track.album.cover} alt={track.title} />
+            recentlyPlayed.map((track) => (
+              <div className="show" key={track.track.id}>
+                <img src={track.track.album.images[0]?.url} alt={track.track.name} />
                 <div className="show-details">
-                  <h3>{track.title}</h3>
-                  <p className="show-description">{track.artist.name}</p>
-                  <button onClick={() => window.open(track.link, '_blank')}>Play</button>
+                  <h3>{track.track.name}</h3>
+                  <p className="show-description">{track.track.artists[0].name}</p>
+                  <button onClick={() => window.open(track.track.external_urls.spotify, '_blank')}>Play</button>
                 </div>
               </div>
             ))
@@ -145,14 +201,14 @@ const HomePage = () => {
       <section className="recommended">
         <h2>Recommended for You</h2>
         <div className="show-container">
-          {playlists.length ? (
-            playlists.slice(-4).map((track, index) => (
-              <div className="show" key={`${track.id}-${index}`}>
-                <img src={track.album.cover} alt={track.title} />
+          {recommended.length ? (
+            recommended.map((track) => (
+              <div className="show" key={track.id}>
+                <img src={track.album.images[0]?.url} alt={track.name} />
                 <div className="show-details">
-                  <h3>{track.title}</h3>
-                  <p className="show-description">{track.artist.name}</p>
-                  <button onClick={() => window.open(track.link, '_blank')}>Play</button>
+                  <h3>{track.name}</h3>
+                  <p className="show-description">{track.artists[0].name}</p>
+                  <button onClick={() => window.open(track.external_urls.spotify, '_blank')}>Play</button>
                 </div>
               </div>
             ))

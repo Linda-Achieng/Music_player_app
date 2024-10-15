@@ -1,184 +1,209 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaSearch, FaHome, FaMusic, FaPlay, FaPause } from 'react-icons/fa';
 import './searchpage.css';
-import { Link } from 'react-router-dom';
+import { FaHome, FaSearch, FaMusic } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 
-const DEEZER_API_URL = 'https://api.deezer.com/search';
-const DEEZER_TRACK_URL = 'https://www.deezer.com/track';
+const CLIENT_ID = '57319966653740b2bf9478612ae7831e';
+const CLIENT_SECRET = '3d33011c38de427fbf0f817126350162';
 
-const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('songs'); 
-  const [results, setResults] = useState([]); 
-  const [playingTrack, setPlayingTrack] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const getAccessToken = async () => {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
+    },
+    body: 'grant_type=client_credentials',
+  });
+  const data = await response.json();
+  return data.access_token;
+};
 
-  const suggestedSongs = [
-    { id: 9, title: 'Thunder', artist: 'Imagine Dragons' },
-    { id: 10, title: 'Someone You Loved', artist: 'Lewis Capaldi' },
-    { id: 11, title: 'Perfect', artist: 'Ed Sheeran' },
-    { id: 12, title: 'Blinding Lights', artist: 'The Weeknd' },
-  ];
+const searchSpotify = async (query, type) => {
+  const token = await getAccessToken();
+  const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=${type}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await response.json();
+  return data;
+};
+
+const fetchPopularTracks = async () => {
+  const token = await getAccessToken();
+  // Replace 'YOUR_PLAYLIST_ID' with an actual playlist ID from Spotify
+  const PLAYLIST_ID = 'YOUR_PLAYLIST_ID'; 
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await response.json();
+  return data.items.map(item => item.track); // Return the actual tracks
+};
+
+const SearchPage = ({ onTrackSelect }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [filterType, setFilterType] = useState('track');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [popularTracks, setPopularTracks] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchTerm) {
-        fetchDeezerData(searchTerm);
-      } else {
-        setResults([]);
-      }
-    }, 300);
+    const loadPopularTracks = async () => {
+      const tracks = await fetchPopularTracks();
+      setPopularTracks(tracks);
+    };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+    loadPopularTracks();
+  }, []);
 
-  const fetchDeezerData = async (query) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(DEEZER_API_URL, {
-        params: { q: query },
-      });
-      setResults(response.data.data);
-    } catch (error) {
-      setError('Error fetching data from Deezer. Please try again later.');
-      console.error('Error fetching data from Deezer:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchQuery) return;
 
-  const playTrack = (track) => {
-    if (playingTrack && playingTrack.id === track.id && isPlaying) {
-      setIsPlaying(false); // Pause if the same track is playing
+    setIsLoading(true);
+    setErrorMessage('');
+    const results = await searchSpotify(searchQuery, filterType);
+
+    setIsLoading(false);
+
+    if (results[`${filterType}s`].items.length > 0) {
+      setSearchResults(results[`${filterType}s`].items);
     } else {
-      setPlayingTrack(track);
-      setIsPlaying(true); // Play the selected track
+      setErrorMessage('No results found.');
+      setSearchResults([]);
     }
-  };
-
-  const togglePlayPause = () => {
-    setIsPlaying((prev) => !prev); // Toggle play/pause
   };
 
   const handleCancel = () => {
-    setSearchTerm('');
-    setResults([]);
+    setSearchQuery('');
+    setSearchResults([]);
+    setErrorMessage('');
+  };
+
+  const handlePlayTrack = (track) => {
+    onTrackSelect({
+      name: track.name,
+      artist: track.artists.map(artist => artist.name).join(', '),
+      albumArt: track.album.images[0].url,
+      audioSrc: track.preview_url,
+    });
+    navigate(`/music-player/${track.id}`);
   };
 
   return (
     <div className="search-page">
-      <header className="search-header">
-        <div className="search-input-container">
-          <input
-            type="text"
-            placeholder={`Search ${filter}...`}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-          {searchTerm && (
-            <button className="cancel-btn" onClick={handleCancel}>
-              Cancel
-            </button>
-          )}
-        </div>
-        <div className="filter-btns">
-          {['songs', 'albums', 'artists'].map((option) => (
-            <button
-              key={option}
-              className={filter === option ? 'active' : ''}
-              onClick={() => setFilter(option)}
-            >
-              {option.charAt(0).toUpperCase() + option.slice(1)}
-            </button>
-          ))}
-        </div>
+      <header className="header">
+        <h1 className="welcome-message">Search for Your Favorite Music</h1>
       </header>
 
-      <section className="search-results">
-        {loading && <p>Loading...</p>}
-        {error && <p className="error-message">{error}</p>}
-        {results.length > 0 ? (
-          results.map((result) => (
-            <div className="result-item" key={result.id}>
-              <img
-                src={result.album.cover_medium}
-                alt={result.title || result.name}
-                className="result-cover"
-              />
-              <div className="result-details">
-                <h3 className="result-title">{result.title || result.name}</h3>
-                <p className="result-artist">{result.artist.name}</p>
-              </div>
-              <button
-                className="result-play-btn"
-                onClick={() => playTrack(result)}
-              >
-                {playingTrack && playingTrack.id === result.id && isPlaying ? 'Pause' : 'Play'}
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No results found. Please try a different search.</p>
+      <section className="search-section">
+        <form onSubmit={handleSearch} className="search-form">
+          <input
+            type="text"
+            placeholder="Search for tracks, albums, artists..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="search-buttons">
+            <button
+              type="button"
+              onClick={() => setFilterType('track')}
+              className={filterType === 'track' ? 'active' : ''}
+            >
+              Songs
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilterType('album')}
+              className={filterType === 'album' ? 'active' : ''}
+            >
+              Albums
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilterType('artist')}
+              className={filterType === 'artist' ? 'active' : ''}
+            >
+              Artists
+            </button>
+          </div>
+          <button type="submit" className="search-btn">Search</button>
+          <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
+        </form>
+
+        {isLoading && <p>Searching...</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+        {searchResults.length > 0 && (
+          <div className="search-results">
+            <h2>Search Results</h2>
+            <ul>
+              {searchResults.map(item => (
+                <li key={item.id} className="result-item">
+                  {filterType === 'track' && (
+                    <>
+                      <img src={item.album.images[0].url} alt={item.name} />
+                      <div>
+                        <h3>{item.name}</h3>
+                        <p>{item.artists?.map(artist => artist.name).join(', ')}</p>
+                        <button onClick={() => handlePlayTrack(item)} className="play-button">Play</button>
+                      </div>
+                    </>
+                  )}
+                  {filterType === 'album' && (
+                    <>
+                      <img src={item.images[0].url} alt={item.name} />
+                      <div>
+                        <h3>{item.name}</h3>
+                        <p>{item.artists?.map(artist => artist.name).join(', ')}</p>
+                      </div>
+                    </>
+                  )}
+                  {filterType === 'artist' && (
+                    <>
+                      <img src={item.images[0]?.url || '/default-artist.png'} alt={item.name} />
+                      <div>
+                        <h3>{item.name}</h3>
+                      </div>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        <div className="suggested-songs">
-          <h2>Suggested Songs</h2>
-          <ul>
-            {suggestedSongs.map((song) => (
-              <li key={song.id} onClick={() => playTrack(song)}>
-                {song.title} by {song.artist}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {popularTracks.length > 0 && (
+          <div className="popular-tracks">
+            <h2>Popular Tracks</h2>
+            <ul>
+              {popularTracks.map(track => (
+                <li key={track.id} className="result-item">
+                  <img src={track.album.images[0]?.url} alt={track.name} />
+                  <div>
+                    <h3>{track.name}</h3>
+                    <p>{track.artists?.map(artist => artist.name).join(', ')}</p>
+                    <button onClick={() => handlePlayTrack(track)} className="play-button">Play</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       <footer className="footer">
         <div className="footer-item">
-          <Link to="/">
-            <FaHome className="footer-icon" /> Home
-          </Link>
-        </div>
-        <div className="footer-item active">
-          <Link to="/search">
-            <FaSearch className="footer-icon" /> Search
-          </Link>
+          <Link to="/"><FaHome className="footer-icon" /> Home</Link>
         </div>
         <div className="footer-item">
-          <Link to="/library">
-            <FaMusic className="footer-icon" /> Your Library
-          </Link>
+          <Link to="/search"><FaSearch className="footer-icon" /> Search</Link>
+        </div>
+        <div className="footer-item">
+          <Link to="/library"><FaMusic className="footer-icon" /> My Library</Link>
         </div>
       </footer>
-
-      {playingTrack && (
-        <div className="mini-player">
-          <img
-            src={playingTrack.album.cover_medium}
-            alt={playingTrack.title}
-            className="mini-player-cover"
-          />
-          <div className="mini-player-details">
-            <h3>{playingTrack.title}</h3>
-            <p>{playingTrack.artist.name}</p>
-          </div>
-          <button className="mini-player-play-btn" onClick={togglePlayPause}>
-            {isPlaying ? <FaPause /> : <FaPlay />}
-          </button>
-          {isPlaying && (
-            <audio
-              src={`${DEEZER_TRACK_URL}/${playingTrack.id}`}
-              autoPlay
-              onEnded={() => setIsPlaying(false)}
-            />
-          )}
-        </div>
-      )}
     </div>
   );
 };

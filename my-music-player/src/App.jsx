@@ -9,7 +9,7 @@ function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
 
   const handleTrackSelection = (track) => {
-    setCurrentTrack(track);
+    setCurrentTrack(track); // Set selected track
   };
 
   return (
@@ -25,15 +25,16 @@ function App() {
           {/* Library Page */}
           <Route path="/library" element={<LibraryPage onTrackSelect={handleTrackSelection} />} />
           
-          {/* Music Player Route */}
+          {/* Music Player Route with dynamic trackId */}
           <Route 
-            path="/player" 
+            path="/music-player/:trackId" 
             element={
               currentTrack ? (
                 <MusicPlayer
                   track={currentTrack.name}
                   artist={currentTrack.artist}
                   albumArt={currentTrack.albumArt}
+                  audioSrc={currentTrack.audioSrc}
                   onBack={() => window.history.back()} 
                 />
               ) : (

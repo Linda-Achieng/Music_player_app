@@ -1,22 +1,68 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaBackward, FaForward, FaPlay, FaPause, FaHeart, FaPlus, FaRandom, FaRedo } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './MusicPlayer.css';
 
-const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
+// Hardcode your CLIENT_ID and CLIENT_SECRET for development
+const CLIENT_ID = '57319966653740b2bf9478612ae7831e';
+const CLIENT_SECRET = '3d33011c38de427fbf0f817126350162';
+
+const MusicPlayer = () => {
   const navigate = useNavigate();
+  const { trackId } = useParams(); // Get track ID from URL parameters
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [volume, setVolume] = useState(1); 
-  const audioRef = useRef(new Audio(audioSrc)); // Ref for audio element
+  const [volume, setVolume] = useState(1);
+  const [trackInfo, setTrackInfo] = useState(null); // State to store track info
+  const audioRef = useRef(new Audio()); // Ref for audio element
+
+  // Function to fetch access token using Client Credentials Flow
+  const getAccessToken = async () => {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
+      },
+      body: 'grant_type=client_credentials',
+    });
+    const data = await response.json();
+    return data.access_token; // Return the access token
+  };
+
+  // Fetch track details when component mounts or trackId changes
+  useEffect(() => {
+    const fetchTrackInfo = async () => {
+      const token = await getAccessToken();
+      const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setTrackInfo(data); // Store track info in state
+      if (data.preview_url) {
+        audioRef.current.src = data.preview_url; // Set audio source to track's preview URL
+      } else {
+        alert('This track does not have a preview available.');
+      }
+    };
+
+    fetchTrackInfo();
+  }, [trackId]);
 
   const handleBackClick = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   const togglePlayPause = () => {
+    if (audioRef.current.src === '') {
+      alert('No audio source available.');
+      return;
+    }
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -28,7 +74,7 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
   };
 
   const handleSkipBackward = () => {
-     console.log('Skipping to the previous track');
+    console.log('Skipping to the previous track');
   };
 
   const handleSkipForward = () => {
@@ -55,19 +101,17 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
 
   return (
     <div className="music-player">
-    <div className="top-bar">
+      <div className="top-bar">
         <button onClick={handleBackClick} className="back-btn" aria-label="Back">
           {"<"}
         </button>
-        <h3 className="track-info">{artist} - {track}</h3>
+        {trackInfo && <h3 className="track-info">{trackInfo.artists[0].name} - {trackInfo.name}</h3>}
       </div>
 
-    
       <div className="album-art">
-        <img src={albumArt} alt={`${track} album cover`} />
+        {trackInfo && <img src={trackInfo.album.images[0].url} alt={`${trackInfo.name} album cover`} />}
       </div>
 
-    
       <div className="playback-controls">
         <button onClick={handleSkipBackward} className="control-btn" aria-label="Previous track">
           <FaBackward />
@@ -80,7 +124,6 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
         </button>
       </div>
 
-      
       <div className="additional-controls">
         <button onClick={toggleShuffle} className={`control-btn ${isShuffling ? 'active' : ''}`} aria-label="Shuffle">
           <FaRandom />
@@ -99,7 +142,6 @@ const MusicPlayer = ({ track, artist, albumArt, audioSrc }) => {
         </button>
       </div>
 
-      
       <div className="volume-control">
         <label htmlFor="volume" className="volume-label">Volume:</label>
         <input
