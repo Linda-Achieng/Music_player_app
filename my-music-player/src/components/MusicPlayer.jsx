@@ -3,22 +3,21 @@ import { FaBackward, FaForward, FaPlay, FaPause, FaHeart, FaPlus, FaRandom, FaRe
 import { useNavigate, useParams } from 'react-router-dom';
 import './MusicPlayer.css';
 
-// Hardcode your CLIENT_ID and CLIENT_SECRET for development
 const CLIENT_ID = '57319966653740b2bf9478612ae7831e';
 const CLIENT_SECRET = '3d33011c38de427fbf0f817126350162';
 
 const MusicPlayer = () => {
   const navigate = useNavigate();
-  const { trackId } = useParams(); // Get track ID from URL parameters
+  const { trackId } = useParams(); 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [volume, setVolume] = useState(1);
-  const [trackInfo, setTrackInfo] = useState(null); // State to store track info
-  const audioRef = useRef(new Audio()); // Ref for audio element
+  const [trackInfo, setTrackInfo] = useState(null); 
+  const audioRef = useRef(new Audio());
 
-  // Function to fetch access token using Client Credentials Flow
+  
   const getAccessToken = async () => {
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -29,10 +28,10 @@ const MusicPlayer = () => {
       body: 'grant_type=client_credentials',
     });
     const data = await response.json();
-    return data.access_token; // Return the access token
+    return data.access_token; 
   };
 
-  // Fetch track details when component mounts or trackId changes
+
   useEffect(() => {
     const fetchTrackInfo = async () => {
       const token = await getAccessToken();
@@ -42,9 +41,9 @@ const MusicPlayer = () => {
         },
       });
       const data = await response.json();
-      setTrackInfo(data); // Store track info in state
+      setTrackInfo(data); 
       if (data.preview_url) {
-        audioRef.current.src = data.preview_url; // Set audio source to track's preview URL
+        audioRef.current.src = data.preview_url; 
       } else {
         alert('This track does not have a preview available.');
       }
@@ -96,7 +95,7 @@ const MusicPlayer = () => {
   const handleVolumeChange = (e) => {
     const newVolume = e.target.value;
     setVolume(newVolume);
-    audioRef.current.volume = newVolume; // Update audio volume
+    audioRef.current.volume = newVolume; 
   };
 
   return (

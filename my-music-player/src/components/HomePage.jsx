@@ -3,22 +3,12 @@ import './homepage.css';
 import { FaRegClock, FaCog, FaHome, FaSearch, FaMusic } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-const CLIENT_ID = '57319966653740b2bf9478612ae7831e'; // Your Spotify Client ID
-const REDIRECT_URI = 'http://localhost:5173/callback'; // Replace with your redirect URI
-const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
-const RESPONSE_TYPE = 'token';
-const SCOPE = 'user-library-read user-read-playback-state'; // Scopes you need for user playback info
-
 const HomePage = () => {
-  const [playlists, setPlaylists] = useState([]);
-  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
-  const [recommended, setRecommended] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
-  const [token, setToken] = useState('');
 
-  // Handle theme toggle
+  
   useEffect(() => {
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
   }, [isDarkMode]);
@@ -35,93 +25,103 @@ const HomePage = () => {
     setShowSchedule(!showSchedule);
   };
 
-  // Spotify Authentication - Extract token from URL after login
-  useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem('token');
+  
+  const playlists = [
+    {
+      id: 1,
+      name: "Chill Vibes",
+      owner: { display_name: "User" },
+      images: [{ url: "https://via.placeholder.com/150" }],
+    },
+    {
+      id: 2,
+      name: "Workout Mix",
+      owner: { display_name: "User" },
+      images: [{ url: "https://via.placeholder.com/150" }],
+    },
+    {
+      id: 3,
+      name: "Party Hits",
+      owner: { display_name: "User" },
+      images: [{ url: "https://via.placeholder.com/150" }],
+    },
+    {
+      id: 4,
+      name: "Relaxing Tunes",
+      owner: { display_name: "User" },
+      images: [{ url: "https://via.placeholder.com/150" }],
+    },
+  ];
 
-    if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split('&')
-        .find(elem => elem.startsWith('access_token'))
-        .split('=')[1];
+  const recentlyPlayed = [
+    {
+      track: {
+        id: 1,
+        name: "Song One",
+        artists: [{ name: "Artist One" }],
+        album: { images: [{ url: "https://via.placeholder.com/150" }] },
+        external_urls: { spotify: "#" },
+      },
+    },
+    {
+      track: {
+        id: 2,
+        name: "Song Two",
+        artists: [{ name: "Artist Two" }],
+        album: { images: [{ url: "https://via.placeholder.com/150" }] },
+        external_urls: { spotify: "#" },
+      },
+    },
+    {
+      track: {
+        id: 3,
+        name: "Song Three",
+        artists: [{ name: "Artist Three" }],
+        album: { images: [{ url: "https://via.placeholder.com/150" }] },
+        external_urls: { spotify: "#" },
+      },
+    },
+    {
+      track: {
+        id: 4,
+        name: "Song Four",
+        artists: [{ name: "Artist Four" }],
+        album: { images: [{ url: "https://via.placeholder.com/150" }] },
+        external_urls: { spotify: "#" },
+      },
+    },
+  ];
 
-      window.location.hash = '';
-      window.localStorage.setItem('token', token);
-    }
-
-    setToken(token);
-  }, []);
-
-  // Fetch user's playlists from Spotify API
-  const fetchUserPlaylists = async () => {
-    try {
-      const response = await fetch('https://api.spotify.com/v1/me/playlists', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch playlists');
-      }
-
-      const data = await response.json();
-      setPlaylists(data.items);
-    } catch (error) {
-      console.error('Error fetching playlists:', error);
-    }
-  };
-
-  // Fetch recently played tracks from Spotify API
-  const fetchRecentlyPlayed = async () => {
-    try {
-      const response = await fetch('https://api.spotify.com/v1/me/player/recently-played', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch recently played tracks');
-      }
-
-      const data = await response.json();
-      setRecentlyPlayed(data.items.slice(0, 4)); // Store only the first 4 tracks
-    } catch (error) {
-      console.error('Error fetching recently played tracks:', error);
-    }
-  };
-
-  // Fetch recommended tracks for the user
-  const fetchRecommendedTracks = async () => {
-    try {
-      const response = await fetch('https://api.spotify.com/v1/recommendations?limit=4', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch recommended tracks');
-      }
-
-      const data = await response.json();
-      setRecommended(data.tracks);
-    } catch (error) {
-      console.error('Error fetching recommended tracks:', error);
-    }
-  };
-
-  // Fetch playlists, recently played, and recommendations once token is available
-  useEffect(() => {
-    if (token) {
-      fetchUserPlaylists();
-      fetchRecentlyPlayed();
-      fetchRecommendedTracks();
-    }
-  }, [token]);
+  const recommended = [
+    {
+      id: 1,
+      name: "Recommended Song One",
+      artists: [{ name: "Recommended Artist One" }],
+      album: { images: [{ url: "https://via.placeholder.com/150" }] },
+      external_urls: { spotify: "#" },
+    },
+    {
+      id: 2,
+      name: "Recommended Song Two",
+      artists: [{ name: "Recommended Artist Two" }],
+      album: { images: [{ url: "https://via.placeholder.com/150" }] },
+      external_urls: { spotify: "#" },
+    },
+    {
+      id: 3,
+      name: "Recommended Song Three",
+      artists: [{ name: "Recommended Artist Three" }],
+      album: { images: [{ url: "https://via.placeholder.com/150" }] },
+      external_urls: { spotify: "#" },
+    },
+    {
+      id: 4,
+      name: "Recommended Song Four",
+      artists: [{ name: "Recommended Artist Four" }],
+      album: { images: [{ url: "https://via.placeholder.com/150" }] },
+      external_urls: { spotify: "#" },
+    },
+  ];
 
   return (
     <div className="homepage">
@@ -161,60 +161,48 @@ const HomePage = () => {
       <section className="playlists">
         <h2>Playlists</h2>
         <div className="playlist-container">
-          {playlists.length ? (
-            playlists.map((playlist) => (
-              <div className="playlist" key={playlist.id}>
-                <img src={playlist.images[0]?.url} alt={playlist.name} />
-                <div className="playlist-details">
-                  <h3>{playlist.name}</h3>
-                  <p className="playlist-description">By {playlist.owner.display_name}</p>
-                  <button onClick={() => window.open(playlist.external_urls.spotify, '_blank')}>Play</button>
-                </div>
+          {playlists.map((playlist) => (
+            <div className="playlist" key={playlist.id}>
+              <img src={playlist.images[0]?.url} alt={playlist.name} />
+              <div className="playlist-details">
+                <h3>{playlist.name}</h3>
+                <p className="playlist-description">By {playlist.owner.display_name}</p>
+                <button onClick={() => window.open(playlist.external_urls.spotify, '_blank')}>Play</button>
               </div>
-            ))
-          ) : (
-            <p>Loading playlists...</p>
-          )}
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="recently-played">
         <h2>Recently Played</h2>
         <div className="show-container">
-          {recentlyPlayed.length ? (
-            recentlyPlayed.map((track) => (
-              <div className="show" key={track.track.id}>
-                <img src={track.track.album.images[0]?.url} alt={track.track.name} />
-                <div className="show-details">
-                  <h3>{track.track.name}</h3>
-                  <p className="show-description">{track.track.artists[0].name}</p>
-                  <button onClick={() => window.open(track.track.external_urls.spotify, '_blank')}>Play</button>
-                </div>
+          {recentlyPlayed.map((track) => (
+            <div className="show" key={track.track.id}>
+              <img src={track.track.album.images[0]?.url} alt={track.track.name} />
+              <div className="show-details">
+                <h3>{track.track.name}</h3>
+                <p className="show-description">{track.track.artists[0].name}</p>
+                <button onClick={() => window.open(track.track.external_urls.spotify, '_blank')}>Play</button>
               </div>
-            ))
-          ) : (
-            <p>No recently played tracks found.</p>
-          )}
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="recommended">
         <h2>Recommended for You</h2>
         <div className="show-container">
-          {recommended.length ? (
-            recommended.map((track) => (
-              <div className="show" key={track.id}>
-                <img src={track.album.images[0]?.url} alt={track.name} />
-                <div className="show-details">
-                  <h3>{track.name}</h3>
-                  <p className="show-description">{track.artists[0].name}</p>
-                  <button onClick={() => window.open(track.external_urls.spotify, '_blank')}>Play</button>
-                </div>
+          {recommended.map((track) => (
+            <div className="show" key={track.id}>
+              <img src={track.album.images[0]?.url} alt={track.name} />
+              <div className="show-details">
+                <h3>{track.name}</h3>
+                <p className="show-description">{track.artists[0].name}</p>
+                <button onClick={() => window.open(track.external_urls.spotify, '_blank')}>Play</button>
               </div>
-            ))
-          ) : (
-            <p>Loading recommended tracks...</p>
-          )}
+            </div>
+          ))}
         </div>
       </section>
 

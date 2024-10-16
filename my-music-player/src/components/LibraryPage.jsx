@@ -13,7 +13,7 @@ const LibraryPage = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedGenre, setSelectedGenre] = useState('all'); // Added state for genre
+  const [selectedGenre, setSelectedGenre] = useState('all');
   const audioRef = useRef(new Audio());
   const navigate = useNavigate();
 
@@ -62,7 +62,6 @@ const LibraryPage = () => {
 
   const handlePlayPause = (track) => {
     if (currentTrack && track.id === currentTrack.id) {
-      // Toggle play/pause
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
@@ -71,9 +70,8 @@ const LibraryPage = () => {
         setIsPlaying(true);
       }
     } else {
-      // Set new track and play it
       setCurrentTrack(track);
-      audioRef.current.src = track.preview_url; // Use preview_url for short clip
+      audioRef.current.src = track.preview_url; 
       audioRef.current.play();
       setIsPlaying(true);
     }
@@ -83,7 +81,6 @@ const LibraryPage = () => {
     navigate(-1);
   };
 
-  // Filter songs by selected genre
   const filteredSongs = selectedGenre === 'all' 
     ? libraryData 
     : libraryData.filter(({ track }) => 
@@ -113,7 +110,7 @@ const LibraryPage = () => {
           filteredSongs.map(({ track }) => (
             <div className="library-item" key={track.id}>
               <img
-                src={track.album?.images[0]?.url || 'default-image-url'} // Fallback image URL if undefined
+                src={track.album?.images[0]?.url || 'default-image-url'} 
                 alt={track.name}
                 className="library-item-img"
               />

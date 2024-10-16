@@ -102,25 +102,26 @@ margin-right: 50px;
 .footer {
   display: flex;
   justify-content: space-around;
-  padding: 10px;
-  background-color: #333;
+  align-items: center;
+  padding: 20px;
+  background-color: #19192b; 
   position: fixed;
-  width: 100%;
   bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .footer-item {
-  text-align: center;
-}
-
-.footer-item a {
-  color: #fff;
+  color: #b5d1e0;
   text-decoration: none;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-.footer-item.active a {
-  color: #4a90e2;
+.footer-item.active {
+  font-weight: bold;
 }
+
 
 /* Responsive Design */
 @media (max-width: 600px) {

@@ -30,13 +30,13 @@ const searchSpotify = async (query, type) => {
 
 const fetchPopularTracks = async () => {
   const token = await getAccessToken();
-  // Replace 'YOUR_PLAYLIST_ID' with an actual playlist ID from Spotify
-  const PLAYLIST_ID = 'YOUR_PLAYLIST_ID'; 
+
+  const PLAYLIST_ID = '6fyZ3CYCQVeyoRQIIb4oJs'; 
   const response = await fetch(`https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = await response.json();
-  return data.items.map(item => item.track); // Return the actual tracks
+  return data.items.map(item => item.track); 
 };
 
 const SearchPage = ({ onTrackSelect }) => {

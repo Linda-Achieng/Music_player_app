@@ -47,16 +47,16 @@ body {
 
 .search-buttons button.active,
 .search-btn {
-  background-color: #1db954; /* Green color for active state */
+  background-color: #1db954; 
   color: white;
 }
 
 .cancel-btn {
-  background-color: #e02424; /* Red color for cancel button */
+  background-color: #e02424; 
   color: white;
 }
 .play-button {
-  background-color: #1DB954; /* Spotify green */
+  background-color: #1DB954; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -66,7 +66,7 @@ body {
 }
 
 .play-button:hover {
-  background-color: #1ed760; /* Lighter green on hover */
+  background-color: #1ed760; 
 }
 
 

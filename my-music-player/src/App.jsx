@@ -9,7 +9,7 @@ function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
 
   const handleTrackSelection = (track) => {
-    setCurrentTrack(track); // Set selected track
+    setCurrentTrack(track); 
   };
 
   return (
